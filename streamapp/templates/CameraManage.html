@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block navitems %} 
+    <li class="nav-item active">
+        <a class="nav-link" href="/camera_manage">Cameras</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/add_camera">Add camera</a>
+    </li>
+{% endblock navitems %} 
+
+
+{% block banner %}
+    <img src="{% static 'cameramain.png' %}" class="d-block w-100" alt="..." style="height:500px;">
+{% endblock banner %}
+
+
+{% block bannermessage %}
+    <div class="carousel-caption d-none d-md-block">
+        <h1>AssistivePro</h1>
+        <h3>Manage Cameras, which can use the services</h3>
+    </div>
+{% endblock bannermessage %}
+
+
+{% block page_name %} View {% endblock page_name %} 
+
+
+{% block page_body %}
+<div class="student_view_page_card">
+    
+    <div class="card-body py-8 px-md-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8" id="view_page_data_table">
+                <h2 class="fw-bold" style="margin-top:20px;"><u>Cameras</u></h2>
+                <div class="home_card_button">
+                    <a  href="/add_camera"style="float:right;">Add Camera</a>
+                </div>
+                <table class="table">
+                    <thead>
+                      <tr  style="color:white;">
+                        <th scope="col">#</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">IP</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Note</th>
+                        <th scope="col">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-group-divider" id="view_page_table_line">
+                        {% for data in Maindata %} 
+                        <tr>
+                            <td class="align-middle"><h5>{{forloop.counter}}</h5></td>
+                            <td class="align-middle"><h5>{{data.cam_id}}</h5></td>
+                            <td class="align-middle"><h5>{{data.ip}}</h5></td>
+                            <td class="align-middle"><h5>{{data.location}}</h5></td>
+                            <td class="align-middle"><h5>{{data.note}}</h5></td>
+                            <td class="align-middle">
+                                <a href="{% url 'edit_camera' data.cam_id %}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{% url 'delete_camera' data.cam_id %}"  method="POST" class="d-inline">
+                                    {% csrf_token %}
+                                    <input type="submit" class="btn btn-danger btn-sm" value="Delete">
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}    
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock page_body %}

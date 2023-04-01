@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block navitems %} 
+    <li class="nav-item active">
+        <a class="nav-link" href="/view_data">Students</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/recent_att">Attendance</a>
+    </li>
+{% endblock navitems %} 
+
+
+{% block banner %}
+    <img src="{% static 'datamain.png' %}" class="d-block w-100" alt="..." style="height:500px;">
+{% endblock banner %}
+
+
+{% block bannermessage %}
+    <div class="carousel-caption d-none d-md-block">
+        <h1>AssistivePro</h1>
+        <h3>Manage data online</h3>
+    </div>
+{% endblock bannermessage %}
+
+
+{% block page_name %} Upload {% endblock page_name %} 
+
+
+{% block page_body %}
+<body>
+<!-- Data Block Starts -->
+<div class="student_add_page_card">
+    
+    <div class="card-body py-8 px-md-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold mb-5" style="margin-top:20px;"><u>Update Roll Number: {{id}}</u></h2>
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="hero">
+                            <div class="St_add_photo_card">
+                                <img src="{% static 'No_profile_icon.png'%}" alt="Add Student photo">
+                                {{form.photo}}     
+                            </div>
+                        </div>
+                        <!-- id -->
+                        
+                        {% comment %} hide form so it cant be changed but has to be passed to work properly {% endcomment %}
+                        {{form.roll_num.as_hidden}}    
+                                  
+
+                        <!-- Name -->
+                        <div class="mb-4">
+                            <div class="form-floating mb-3">
+                                <div class="input-group" style="height: 50px;">
+                                    <span class="input-group-text">Name :</span>
+                                        {{form.name}}    
+                                  </div>
+                            </div>
+                        </div>
+
+                        <!-- Department -->
+                        <div class="mb-4">
+                            <div class="form-floating mb-3">
+                                <div class="input-group" style="height:50px; background-color:black;">
+                                    <span class="input-group-text">Department :</span>
+                                        {{form.department}}    
+                                  </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Semester -->
+                        <div class="mb-4">
+                            <div class="form-floating mb-3">
+                                <div class="input-group" style="height: 50px;">
+                                    <span class="input-group-text">Semester :</span>
+                                        {{form.semester}}    
+                                  </div>
+                            </div>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="mb-4">
+                            <div class="form-floating mb-3">
+                                <div class="input-group" style="height: 50px;">
+                                    <span class="input-group-text">Status :</span>
+                                        {{form.status}}    
+                                  </div>
+                            </div>
+                        </div>
+                        
+                        <input class="btn btn-primary" type="submit" value="update" style="margin-bottom:30px;">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+{% endblock page_body %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+
+{% load static %}
+
+
+{% block navitems %} 
+    <li class="nav-item active">
+        <a class="nav-link" href="/pre_encode">Encode</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/pre_session">Start Session</a>
+    </li>
+{% endblock navitems %} 
+
+
+{% block banner %}
+    <img src="{% static 'servicemain.png' %}" class="d-block w-100" alt="..." style="height:500px;">
+{% endblock banner %}
+
+
+{% block bannermessage %}
+    <div class="carousel-caption d-none d-md-block">
+        <h1>AssistivePro</h1>
+        <h3>Here to assist you</h3>
+    </div>
+{% endblock bannermessage %}
+
+
+{% block page_name %} View {% endblock page_name %} 
+
+
+{% block page_body %}
+<body>
+    
+    <div class="main_container">
+        <div class="container" style="justify-content:center; width:80%;" id="home_page_container" >
+            <div class="card mb-3">
+                <div class="row g-0"  id="home_data_card">
+                    <div class="card-body" style="margin:auto;">
+                        <div class="home_card_button">
+                            <a  href="#" style="float:left;">End Session</a>
+                        </div>
+                        <div class="home_card_button">
+                            <a  href="/monitor_students"style="float:right;">Monitor Students</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="text-align:center; margin-bottom: 20px; color:aqua;">
+        <h1>Marking attendance</h1>
+        <img class="video_page_att_video" src="{% url 'video_feed' %}"> 
+    </div>
+</body> 
+{% endblock page_body %}

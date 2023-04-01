@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block navitems %} 
+    <li class="nav-item active">
+        <a class="nav-link" href="/camera_manage">Cameras</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/add_camera">Add camera</a>
+    </li>
+{% endblock navitems %} 
+
+
+{% block banner %}
+    <img src="{% static 'cameramain.png' %}" class="d-block w-100" alt="..." style="height:500px;">
+{% endblock banner %}
+
+
+{% block bannermessage %}
+    <div class="carousel-caption d-none d-md-block">
+        <h1>AssistivePro</h1>
+        <h3>Manage Cameras, which can use the services</h3>
+    </div>
+{% endblock bannermessage %}
+
+
+{% block page_name %} Upload {% endblock page_name %} 
+
+
+{% block page_body %}
+<body>
+<!-- Data Block Starts -->
+<div class="student_add_page_card">
+    
+    <div class="card-body py-8 px-md-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold mb-5" style="margin-top:20px;"><u>Add Camera</u></h2>
+                <form action="/add_camera" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+            
+                    <div class="row">
+                        <div class="hero">
+                            <div class="St_add_photo_card">
+                                <img src="{% static 'add_camera_pic.png'%}" alt="Add Student photo">     
+                            </div>
+                        </div>
+
+                        <!-- id -->
+                        <div class="input-group mb-5">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">ID :</span>
+                            </div>
+                            {{form.cam_id}}
+                        </div>
+
+                        <!-- Name -->
+                        <div class="input-group mb-5">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">IP :</span>
+                            </div>
+                            {{form.ip}}
+                        </div>
+
+                        <!-- Department -->
+                        <div class="input-group mb-5">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Location :</span>
+                            </div>
+                            {{form.location}}
+                        </div>
+                    
+                        <!-- Semester -->
+                        <div class="input-group mb-5">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Note :</span>
+                            </div>
+                            {{form.note}}
+                        </div>
+                        
+                        <input class="btn btn-primary" type="submit" value="Add" style="margin-bottom:30px;">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+{% endblock page_body %}

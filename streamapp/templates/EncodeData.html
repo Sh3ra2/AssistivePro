@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block navitems %} 
+    <li class="nav-item active">
+        <a class="nav-link" href="/pre_encode">Encode</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/pre_session">Start Session</a>
+    </li>
+{% endblock navitems %} 
+
+
+{% block banner %}
+    <img src="{% static 'servicemain.png' %}" class="d-block w-100" alt="..." style="height:500px;">
+{% endblock banner %}
+
+
+{% block bannermessage %}
+    <div class="carousel-caption d-none d-md-block">
+        <h1>AssistivePro</h1>
+        <h3>Here to assist you</h3>
+    </div>
+{% endblock bannermessage %}
+
+
+{% block page_name %} Encode {% endblock page_name %} 
+
+
+{% block page_body %}
+<body>
+    
+    <div class="main_container">
+        <div class="container" style="justify-content:center;" id="home_page_container" >
+            <div class="card mb-3">
+                <div class="row g-0"  id="home_data_card">
+                    <div class="col-md-4" style="align-self:center; text-align:center;">
+                        <h3>{{t_pics}} students encoded</h3>
+                    </div>
+                    <div class="col-md-8" style="align-self: center;">
+                        <div class="card-body">
+                            <div class="home_card_button">
+                                <a  href="/encode_data" style="float:right;">Start Session</a>
+                            </div>
+                            <div class="home_card_button">
+                                <a  href="/view_data" style="float:right">Home</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body> 
+{% endblock page_body %}

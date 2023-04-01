@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block navitems %} 
+    <li class="nav-item active">
+        <a class="nav-link" href="/view_data">Students</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/recent_att">Attendance</a>
+    </li>
+{% endblock navitems %} 
+
+
+{% block banner %}
+    <img src="{% static 'datamain.png' %}" class="d-block w-100" alt="..." style="height:500px;">
+{% endblock banner %}
+
+
+{% block bannermessage %}
+    <div class="carousel-caption d-none d-md-block">
+        <h1>AssistivePro</h1>
+        <h3>Manage data online</h3>
+    </div>
+{% endblock bannermessage %}
+
+
+{% block page_name %} View {% endblock page_name %} 
+
+
+{% block page_body %}
+<div class="student_view_page_card">
+    <div class="card-body py-8 px-md-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8" id="view_page_data_table">
+                <h2 class="fw-bold mb-5" style="margin-top:20px;"><u>Students</u></h2>
+                <div class="home_card_button">
+                    <a  href="/new_data"style="float:right;">Add Student</a>
+                </div>
+                <table class="table">
+                    <thead>
+                      <tr  style="color:white;">
+                        <th scope="col">#</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Student</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Semester</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-group-divider" id="view_page_table_line">
+                        {% for data in Maindata %} 
+                        <tr>
+                            <td class="align-middle"><h5 style="color:grey;">{{forloop.counter}}</h5></td>
+                            <td class="align-middle"><h5>{{data.roll_num}}</h5></td>
+                            <td>
+                                <img class="view_student_img" src="media/{{data.photo}}">
+                            </td>
+                            <td class="align-middle"><strong>{{data.name}}</strong></td>
+                            <td class="align-middle"><strong>{{data.department}}</strong></td>
+                            <td class="align-middle"><strong>{{data.semester}}</strong></td>
+                            <td class="align-middle"><strong>{{data.status}}</strong></td>
+                            <td class="align-middle">
+                                <a href="{% url 'edit_student' data.roll_num %}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{% url 'delete_student' data.roll_num %}"  method="POST" class="d-inline">
+                                    {% csrf_token %}
+                                    <input type="submit" class="btn btn-danger btn-sm" value="Delete">
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}    
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock page_body %}

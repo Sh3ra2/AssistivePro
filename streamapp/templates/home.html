@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+
+{% load static %}
+
+
+{% block banner %}
+    <img src="{% static 'homeland.png' %}" class="d-block w-100" alt="..." style="height:500px;">
+{% endblock banner %}
+
+
+{% block page_name %} Home {% endblock page_name %} 
+
+
+{% block page_body %}
+
+
+<div class="main_container">
+    <div class="container" style="justify-content:center;" id="home_page_container" >
+        <div class="card mb-3">
+            <div class="row g-0"  id="home_data_card">
+                <div class="col-md-4">
+                    <img src="{% static 'homeport.png' %}" class="img-fluid rounded-start" alt="..." >
+                </div>
+                <div class="col-md-8" style="align-self: center;">
+                    <div class="card-body">
+                        <h1 class="card-title">AsssitivePro</h1>
+                        <h4 class="card-text">Add students, encode their faces, marks their attendance through camera and monitor students in exams.</h4>
+                        <br>
+                        <div class="home_card_button">
+                            <a  href="#">Check</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3" >
+            <div class="row g-0" id="home_data_card">
+                <div class="col-md-8" style="align-self: center;">
+                    <h1 class="card-title">Camera</h1>
+                    <h4 class="card-text">Add cameras to monitor students</h4>
+                    <div class="home_card_button" style="float:right">
+                        <a  href="/camera_manage">Cameras</a>
+                    </div>
+                    <p class="card-text" style="margin-bottom:20px;"><small class="text-muted">.</small></p>
+                </div>
+                <div class="col-md-4">
+                        <img src="{% static 'Camera.png' %}" class="img-fluid rounded-start" alt="..." style="float:right;">
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3" >
+            <div class="row g-0" id="home_data_card">
+                <div class="col-md-4">
+                    <img src="{% static 'Data.png' %}" class="img-fluid rounded-start" alt="..." >
+                </div>
+                <div class="col-md-8" style="align-self: center;">
+                    <div class="card-body">
+                        <h1 class="card-title">Data</h1>
+                        <h4 class="card-text">Store you valuable data in safe and secure environment</h4>
+                        <div class="home_card_button" >
+                            <a  href="/view_data">Data</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3" >
+            <div class="row g-0" id="home_data_card">
+                <div class="col-md-8" style="align-self: center;">
+                    <h1 class="card-title">Services</h1>
+                    <h4 class="card-text">Use computer vision to manage and monitor exams</h4>
+                    <div class="home_card_button" style="float:right">
+                        <a  href="/pre_encode">Services</a>
+                    </div>
+                    <p class="card-text" style="margin-bottom:20px;"><small class="text-muted">.</small></p>
+                </div>
+                <div class="col-md-4">
+                    
+                    <img src="{% static 'service.png' %}" class="img-fluid rounded-start" alt="..." style="float:right;">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock page_body %}
