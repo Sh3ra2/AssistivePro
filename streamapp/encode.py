@@ -2,8 +2,7 @@ import cv2
 import face_recognition
 import pickle
 import os
-from .models import profile_image
-# from firebase_setup import firestart
+
 from firebase_admin import credentials, firestore, storage
 
 
@@ -52,6 +51,3 @@ def encode_process():
     file.close()
 
     print("File saved")
-
-
-encode_process()

@@ -45,10 +45,10 @@
                       </tr>
                     </thead>
                     <tbody class="table-group-divider" id="view_page_table_line">
-                        {% for data in Maindata %} 
+                        {% for file in files %} 
                         <tr>
-                            <td class="align-middle"><h5>{{data.roll_num}}</h5></td>
-                            <td class="align-middle"><strong>{{data.name}}</strong></td>
+                            <td class="align-middle"><h5>{{file}}</h5></td>
+                            <td class="align-middle"><strong><a href="{{ file }}">{{ file }}</a></strong></td>
                             <td class="align-middle"><strong>...</strong></td>
                         </tr>
                         {% endfor %}    

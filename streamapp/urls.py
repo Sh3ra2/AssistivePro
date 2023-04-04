@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('video_feed', views.video_feed, name='video_feed'),
+    path('monitor_students_feed', views.monitor_students_feed, name='monitor_students_feed'),
     path('', views.index, name='index'),
     path('video_data', views.video_data, name='video_data'),
     path('login_user', views.login_user, name='login_user'),
