@@ -54,5 +54,76 @@
         <h1>Monitoring Students</h1>
         <img class="video_page_att_video" src="{% url 'monitor_students_feed' %}"> 
     </div>
+    <button id="startButton" onclick="startWebcam()">Start Webcam</button>
+    <button id="stopButton" onclick="stopWebcam()" disabled>Stop Webcam</button>
+    <video id="webcam-video" autoplay style="display:none;"></video>
+    <canvas id="grayscale-canvas" style="display:none;"></canvas>
+    <img id="grayscale-image" alt="Grayscale Frame" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const video = document.getElementById('webcam-video');
+        const canvas = document.getElementById('grayscale-canvas');
+        const grayscaleImage = document.getElementById('grayscale-image');
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+        const ctx = canvas.getContext('2d');
+        let videoStream;
+        let frameInterval;
+        
+        function startWebcam() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        video.srcObject = stream;
+                        videoStream = stream;
+                        video.style.display = "block";
+                        startButton.disabled = true;
+                        stopButton.disabled = false;
+                    });
+            }
+            frameInterval = setInterval(sendFrameToServer, 100);  // Send frames every 1000ms (1 second)
+        }
+        
+        function sendFrameToServer() {
+            if (videoStream) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(function(blob) {
+                    let formData = new FormData();
+                    formData.append('frame', blob);
+                    formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        
+                    $.ajax({
+                        url: 'monitor_students_feed',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            grayscaleImage.src = response.grayscale_frame;
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log('Error:', textStatus, errorThrown);
+                        }
+                    });
+                }, 'image/jpeg');
+            }
+        }
+        
+        function stopWebcam() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                video.style.display = "none";
+                startButton.disabled = false;
+                stopButton.disabled = true;
+                clearInterval(frameInterval); // Clear the frame interval
+            }
+        }
+        
+        
+    </script>
 </body> 
 {% endblock page_body %}

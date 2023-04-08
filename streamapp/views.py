@@ -1,7 +1,6 @@
 # -- Importing curret files
 from django.shortcuts import render, redirect
 from django.http.response import StreamingHttpResponse
-from streamapp.camera import VideoCamera
 from streamapp.attendance import attendance
 from streamapp.monitor_students import HeadDetectionView
 import os
@@ -9,6 +8,13 @@ import time
 import datetime
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,logout,login
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import cv2
+from PIL import Image
+import base64
+import io
+import numpy as np
 
 # -- Importing Created Files
 from .pic_form import image_form
@@ -84,9 +90,28 @@ def video_feed(request):
 	return StreamingHttpResponse(gen(attendance()),
 					content_type='multipart/x-mixed-replace; boundary=frame')
 
+HeadDet = HeadDetectionView()
+@csrf_exempt
 def monitor_students_feed(request):
-	return StreamingHttpResponse(gen(HeadDetectionView()),
-					content_type='multipart/x-mixed-replace; boundary=frame')
+	if request.method == 'POST':
+		# print(request.FILES)  # Add this line to log the request.FILES dictionary
+		frame = request.FILES['frame']
+		frame_bytes = frame.read()
+		frame_array = np.asarray(bytearray(frame_bytes), dtype=np.uint8)
+		frame_bgr = cv2.imdecode(frame_array, cv2.IMREAD_COLOR)
+		# frame_gray = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2GRAY)
+
+		frame_gray = HeadDet.get_frame(frame_bgr)
+		
+
+		frame_gray_pil = Image.fromarray(frame_gray)
+		buffer = io.BytesIO()
+		frame_gray_pil.save(buffer, format='JPEG')
+		frame_gray_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+
+		return JsonResponse({'grayscale_frame': f'data:image/jpeg;base64,{frame_gray_base64}'})
+
+	return JsonResponse({'error': 'Invalid request'})
 
 
 # -- Students Functions --\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
