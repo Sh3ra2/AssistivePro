@@ -1,0 +1,196 @@
+body{
+    min-height: 100%;
+    background-color: #1a1a1a;
+}
+#footer p{
+    color: white;
+}
+#footer h3{
+    color: white;
+}
+#footer h4{
+    color: white;
+}
+
+.navbar a img{
+    width :60px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.navbar a img{
+    background: black;
+    border: solid black 2px;
+}
+.navbar a img:hover{
+    border: solid aqua 2px;
+}
+
+
+.container-fluid a{
+    font-weight: bold;
+    font-size: 14px pop;
+    border-radius: 10px;
+    color: aqua;
+    margin-left: 20px;
+    font-family: sans-serif;
+}
+.container-fluid a:hover{
+    background:aqua;
+    color: #282828;
+}
+
+.card-login
+{
+  background: white;
+  height: fit-content;
+  width: fit-content;
+  margin: auto;
+  box-shadow: 0px 2px 8px #0000003d;
+  border-radius: 18px;
+  margin-top: 15px;
+}
+
+/* ----------------- Home stylings ----------------- */
+.home_card_button a{
+    background: #282828; 
+    color:aqua; 
+    padding:15px; 
+    border-radius:10px; 
+    font-size:16px; 
+    text-decoration:none;
+    margin: 10px;
+    border: solid aqua 2px;
+    font-weight: bold;
+}
+.home_card_button a:hover{
+    color: black;
+    background: aqua;
+    border: solid aqua 2px;
+}
+
+
+#home_page_container div{
+    background-color: #282828; 
+    color:white;
+    border-radius: 19px;
+}
+#home_data_card:hover{
+    box-shadow: 0 0 8px 2px rgb(85, 79, 79);
+}
+
+#home_page_container h1{
+    color: aqua;
+    margin-left: 10px;
+}
+
+#home_page_container h4{
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+#home_page_container img{
+    height:500px;
+}
+
+/* -------------- add page styling -------------- */
+.student_add_page_card{
+    background: #282828;
+    color: white;
+    height: fit-content;
+    width: 80%;
+    margin: auto;
+    box-shadow: 0 0 8px 2px rgb(85, 79, 79);
+    border-radius: 18px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.St_add_photo_card{
+    background: silver;
+    height: fit-content;
+    width: 40%;
+    margin: auto;
+    box-shadow: 0 0 8px 2px rgb(85, 79, 79);
+    border-radius: 18px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+.St_add_photo_card img{
+    margin: 20px;
+    width: 80%;
+}
+
+/* ------------ View student page styling ------------ */
+.student_view_page_card{
+    background: #282828;
+    color: white;
+    height: fit-content;
+    width: 95%;
+    margin: auto;
+    box-shadow: 0 0 8px 2px rgb(85, 79, 79);
+    border-radius: 18px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+#view_page_data_table{
+    width: 90%;
+}
+#view_page_table_line{
+    color: white;
+}
+
+.view_student_img{
+    width: 50px;
+    height: 50px;
+    border-radius:10px;
+}
+.view_student_img:hover{
+    transform: scale(5);
+}
+
+/* ------------------ video page styling ------------------ */
+.video_page_att_video{
+    border:solid #282828 10px; 
+    margin-top: 20px; 
+    border-radius:18px;
+    box-shadow: 0 0 8px 2px rgb(85, 79, 79);
+    width: 80%;
+}
+
+/* ------------------ SWAL styling ------------------ */
+.my-swal-container-class {
+    background-color: white;
+    color: white;
+    border-radius: 18px;
+    border: 1px solid black;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+}
+.swal-text {
+    background-color: black;
+    padding: 17px;
+    font-size: 20px;
+    border: 1px solid #F0E1A1;
+    display: block;
+    border-radius: 18px;
+    margin: 22px;
+    text-align: center;
+    color: white;
+}  
+.swal-button {
+    padding: 7px 19px;
+    border-radius: 5px;
+    background-color: black;
+    font-size: 12px;
+    border: 1px solid aqua;
+    /* text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3); */
+}
+
+.my-swal-container-red {
+    background-color: red;
+    color: white;
+    border-radius: 18px;
+    border: 1px solid black;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+}
