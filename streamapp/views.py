@@ -9,7 +9,7 @@ import datetime
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,logout,login
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+from django.http import JsonResponse, FileResponse, HttpResponseNotFound, HttpResponse
 import cv2
 from PIL import Image
 import base64
@@ -68,7 +68,8 @@ def login_user(request):
 		else:
 			# No back
 			print("You are not authenticated")
-			return render(request,'login.html')
+			messages.success(request,f"Invalid user")
+			return redirect('/login_user')
 	
 	return render(request, 'login.html')
 
@@ -85,16 +86,39 @@ def gen(camera):
 		yield (b'--frame\r\n'
 				b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
+# -- old data video feed
+# def video_feed(request):
+# 	return StreamingHttpResponse(gen(attendance()),
+# 					content_type='multipart/x-mixed-replace; boundary=frame')
 
+
+markattendance = attendance()
+@csrf_exempt
 def video_feed(request):
-	return StreamingHttpResponse(gen(attendance()),
-					content_type='multipart/x-mixed-replace; boundary=frame')
+	if request.method == 'POST':
+		# print(request.FILES)  # Line to log the request.FILES dictionary
+		frame = request.FILES['frame']
+		frame_bytes = frame.read()
+		frame_array = np.asarray(bytearray(frame_bytes), dtype=np.uint8)
+		frame_bgr = cv2.imdecode(frame_array, cv2.IMREAD_COLOR)
+
+		frame_gray = markattendance.process_frame(frame_bgr)
+		
+		frame_gray_pil = Image.fromarray(frame_gray)
+		buffer = io.BytesIO()
+		frame_gray_pil.save(buffer, format='JPEG')
+		frame_gray_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+
+		return JsonResponse({'grayscale_frame': f'data:image/jpeg;base64,{frame_gray_base64}'})
+
+	return JsonResponse({'error': 'Invalid request'})
+
 
 HeadDet = HeadDetectionView()
 @csrf_exempt
 def monitor_students_feed(request):
 	if request.method == 'POST':
-		# print(request.FILES)  # Add this line to log the request.FILES dictionary
+		# print(request.FILES)  # -- Line to log the request.FILES dictionary
 		frame = request.FILES['frame']
 		frame_bytes = frame.read()
 		frame_array = np.asarray(bytearray(frame_bytes), dtype=np.uint8)
@@ -103,7 +127,6 @@ def monitor_students_feed(request):
 
 		frame_gray = HeadDet.get_frame(frame_bgr)
 		
-
 		frame_gray_pil = Image.fromarray(frame_gray)
 		buffer = io.BytesIO()
 		frame_gray_pil.save(buffer, format='JPEG')
@@ -505,6 +528,7 @@ def monitor_students(request):
 	return render(request, 'MonitorStudentsPage.html')
 
 
+# -- View Attendance --\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 def recent_att(request):
 	if request.user.is_anonymous:
 		return redirect('/login_user')
@@ -514,3 +538,25 @@ def recent_att(request):
 	files = os.listdir('media/att_data')
 
 	return render(request, 'RecentAtt.html',{'files':files})
+
+
+def download_file(request, file_name):
+    file_path = os.path.join('media', 'att_data', file_name)
+    if os.path.exists(file_path):
+        response = FileResponse(open(file_path, 'rb'), content_type='application/csv')
+        response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+        return response
+    else:
+        return HttpResponseNotFound('File not found')
+
+
+def delete_csv(request, file_name):
+	file_path = os.path.join('media', "att_data", file_name)
+    
+	if os.path.exists(file_path):
+		os.remove(file_path)
+		messages.success(request,f"File {file_name} Deleted!")
+		return redirect('/recent_att')
+
+	else:
+		return redirect('/recent_att')

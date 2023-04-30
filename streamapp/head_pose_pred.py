@@ -32,9 +32,9 @@ def detect_head_turns(frame, left_count, right_count, state, start_time):
     def label_head_pose(angle, left_threshold=-6, right_threshold=6):
         print(angle)
         if angle < left_threshold:
-            return "Left"
-        elif angle > right_threshold:
             return "Right"
+        elif angle > right_threshold:
+            return "Left"
         else:
             return "Center"
 

@@ -194,3 +194,20 @@ body{
     border: 1px solid black;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
+/* -------------- add page styling -------------- */
+#startButton{
+    background: #282828; 
+    color:aqua; 
+    padding:15px; 
+    border-radius:10px; 
+    font-size:16px; 
+    text-decoration:none;
+    margin: 10px;
+    border: solid aqua 2px;
+    font-weight: bold;
+}
+#startButton:hover{
+    color: black;
+    background: aqua;
+    border: solid aqua 2px;
+}

@@ -39,7 +39,10 @@
                 <div class="row g-0"  id="home_data_card">
                     <div class="card-body" style="margin:auto;">
                         <div class="home_card_button">
-                            <a  href="#" style="float:left;">End Session</a>
+                            <a  href="#container" style="float:left;" onclick="startWebcam()">Mark Attendance</a>
+                        </div>
+                        <div class="home_card_button">
+                            <a  href="/pre_session" style="float:left;" onclick = "stopWebcam">End Session</a>
                         </div>
                         <div class="home_card_button">
                             <a  href="/monitor_students"style="float:right;">Monitor Students</a>
@@ -52,7 +55,78 @@
 
     <div class="container" style="text-align:center; margin-bottom: 20px; color:aqua;">
         <h1>Marking attendance</h1>
-        <img class="video_page_att_video" src="{% url 'video_feed' %}"> 
     </div>
+
+    <div class="container" style="text-align:center; margin-bottom: 20px; color:aqua;">
+        <video class="video_page_att_video" id="webcam-video" autoplay style="display:none;"></video>
+        <canvas id="grayscale-canvas" style="display:none;"></canvas>
+        <img class="video_page_att_video" id="grayscale-image" alt="Video" />
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const video = document.getElementById('webcam-video');
+        const canvas = document.getElementById('grayscale-canvas');
+        const grayscaleImage = document.getElementById('grayscale-image');
+        const startButton = document.getElementById('startButton');
+        const ctx = canvas.getContext('2d');
+        let videoStream;
+        let frameInterval;
+        
+        function startWebcam() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        video.srcObject = stream;
+                        videoStream = stream;
+                        video.style.display = "none";
+                        startButton.disabled = true;
+                        document.getElementById("stopWebcam").disabled = false;
+                    });
+            }
+            frameInterval = setInterval(sendFrameToServer, 500);  // Send frames every 1000ms (1 second)
+        }
+        
+        function sendFrameToServer() {
+            if (videoStream) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(function(blob) {
+                    let formData = new FormData();
+                    formData.append('frame', blob);
+                    formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        
+                    $.ajax({
+                        url: 'video_feed',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            grayscaleImage.src = response.grayscale_frame;
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log('Error:', textStatus, errorThrown);
+                        }
+                    });
+                }, 'image/jpeg');
+            }
+        }
+        
+        function stopWebcam() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                video.style.display = "none";
+                startButton.disabled = false;
+                document.getElementById("stopWebcam").disabled = true;
+                clearInterval(frameInterval); // Clear the frame interval
+            }
+        }
+        
+        
+    </script>
+
 </body> 
 {% endblock page_body %}

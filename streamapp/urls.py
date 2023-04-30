@@ -25,4 +25,6 @@ urlpatterns = [
     path('delete/<int:id>/', views.delete_student, name='delete_student'),
     path('deleteCamera/<int:id>/', views.delete_camera, name='delete_camera'),
     path('edit_camera/<int:id>/', views.edit_camera, name='edit_camera'),
+    path('download/<str:file_name>/', views.download_file, name='download_file'),
+    path('delete_csv/<str:file_name>/', views.delete_csv, name='delete_csv'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

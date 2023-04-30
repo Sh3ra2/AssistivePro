@@ -47,9 +47,12 @@
                     <tbody class="table-group-divider" id="view_page_table_line">
                         {% for file in files %} 
                         <tr>
+                            <td class="align-middle"><h5>{{forloop.counter}}</h5></td>
                             <td class="align-middle"><h5>{{file}}</h5></td>
-                            <td class="align-middle"><strong><a href="{{ file }}">{{ file }}</a></strong></td>
-                            <td class="align-middle"><strong>...</strong></td>
+                            <td class="align-middle">
+                                <a href="{% url 'download_file' file_name=file %}" class="btn btn-warning btn-sm">Download</a>
+                                <a href="{% url 'delete_csv' file %}" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
                         </tr>
                         {% endfor %}    
                     </tbody>

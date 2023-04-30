@@ -41,8 +41,12 @@
                         <div class="home_card_button">
                             <a  href="/video_data" style="float:left;">Mark Attendance</a>
                         </div>
+
                         <div class="home_card_button">
-                            <a  href="#"style="float:right;">End Session</a>
+                            <a href="/pre_session" style="float:right;" onclick="stopWebcam()" disabled>End Session</a>
+                        </div>
+                        <div class="home_card_button">
+                            <a href="#container" id ="stopWebcam" style="float:right;" onclick="startWebcam()" >Start Monitoring</a>
                         </div>
                     </div>
                 </div>
@@ -51,14 +55,14 @@
     </div>
 
     <div class="container" style="text-align:center; margin-bottom: 20px; color:aqua;">
-        <h1>Monitoring Students</h1>
-        <img class="video_page_att_video" src="{% url 'monitor_students_feed' %}"> 
+        <h1>Monitor Students</h1>
     </div>
-    <button id="startButton" onclick="startWebcam()">Start Webcam</button>
-    <button id="stopButton" onclick="stopWebcam()" disabled>Stop Webcam</button>
-    <video id="webcam-video" autoplay style="display:none;"></video>
-    <canvas id="grayscale-canvas" style="display:none;"></canvas>
-    <img id="grayscale-image" alt="Grayscale Frame" />
+
+    <div class="container" style="text-align:center; margin-bottom: 20px; color:aqua;">
+        <video class="video_page_att_video" id="webcam-video" autoplay style="display:none;"></video>
+        <canvas id="grayscale-canvas" style="display:none;"></canvas>
+        <img class="video_page_att_video" id="grayscale-image" alt="Video" />
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -66,7 +70,6 @@
         const canvas = document.getElementById('grayscale-canvas');
         const grayscaleImage = document.getElementById('grayscale-image');
         const startButton = document.getElementById('startButton');
-        const stopButton = document.getElementById('stopButton');
         const ctx = canvas.getContext('2d');
         let videoStream;
         let frameInterval;
@@ -77,9 +80,9 @@
                     .then(stream => {
                         video.srcObject = stream;
                         videoStream = stream;
-                        video.style.display = "block";
+                        video.style.display = "none";
                         startButton.disabled = true;
-                        stopButton.disabled = false;
+                        document.getElementById("stopWebcam").disabled = false;
                     });
             }
             frameInterval = setInterval(sendFrameToServer, 100);  // Send frames every 1000ms (1 second)
@@ -118,7 +121,7 @@
                 video.srcObject = null;
                 video.style.display = "none";
                 startButton.disabled = false;
-                stopButton.disabled = true;
+                document.getElementById("stopWebcam").disabled = true;
                 clearInterval(frameInterval); // Clear the frame interval
             }
         }
