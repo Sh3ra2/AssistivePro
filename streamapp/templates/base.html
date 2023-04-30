@@ -19,7 +19,7 @@
 
 
     {% comment %} Title and logo {% endcomment %}
-    <title>Home</title>
+    <title>{% block page_title %}Home{% endblock page_title %}</title>
     <link rel="icon" href="{% static 'logoAssistivePro.png' %}" type="image/x-icon">
 </head>
 <body>
