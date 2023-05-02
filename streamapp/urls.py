@@ -27,4 +27,6 @@ urlpatterns = [
     path('edit_camera/<int:id>/', views.edit_camera, name='edit_camera'),
     path('download/<str:file_name>/', views.download_file, name='download_file'),
     path('delete_csv/<str:file_name>/', views.delete_csv, name='delete_csv'),
+    path('app_settings', views.app_settings, name='app_settings'),
+    path('end_session', views.end_session, name='end_session'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

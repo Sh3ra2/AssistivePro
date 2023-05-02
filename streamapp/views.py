@@ -17,10 +17,8 @@ import io
 import numpy as np
 
 # -- Importing Created Files
-from .pic_form import image_form
-from .pic_form import camera_form
-from .models import profile_image
-from .models import camera_model
+from .pic_form import image_form, camera_form, settings_form
+from .models import profile_image, camera_model, settings_model
 from .encode import encode_process
 from .att_history_check import time_difference
 from .mk_csv import export_firestore_to_csv
@@ -80,17 +78,6 @@ def logout_user(request):
 
 
 # -- Get Video Functions --\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-def gen(camera):
-	while True:
-		frame = camera.get_frame()
-		yield (b'--frame\r\n'
-				b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-
-# -- old data video feed
-# def video_feed(request):
-# 	return StreamingHttpResponse(gen(attendance()),
-# 					content_type='multipart/x-mixed-replace; boundary=frame')
-
 
 markattendance = attendance()
 @csrf_exempt
@@ -448,7 +435,6 @@ def edit_camera(request, id):
 
 	print("Hellow from edit camra")
 	if request.method == 'POST':
-		print("Hellow from edit cam IF above")
 		roll = camera_model.objects.get(cam_id = id)
 		form  = camera_form(request.POST,  instance=roll)
 		# print(type(form))
@@ -485,7 +471,7 @@ def video_data(request):
 		last_att = list(datetime_dict.values())[0]  # Get first value from dictionary
 		print("Last attendance date is ", last_att)
 	else:
-		print(u'No such document!')
+		print('Document not found!')
 
 
 	# --- getting current date and time
@@ -496,14 +482,29 @@ def video_data(request):
 	# --- time difference is
 	a = time_difference(last_att, new_now)
 	print("time diff is ",a, " min")
+	
+	req_data = settings_model.objects.get(id_settings = 1).attendance_update_time_min
+	print("req data in minutes is ", req_data)
 
 	# --- updating last attendance in firestore
-	if a > 1:
+	if a > req_data:
 		at = last_att.replace(":","")
 		filename = f'media/att_data/{at}.csv'
+
+		# -- function to make csv of attendance present in firestore
 		export_firestore_to_csv('recent_att', filename)
+
+		# -- delete data in store
+		users_ref = db.collection(u'recent_att')
+		# get data in stream-------------------------
+		docs = users_ref.stream()
+		for doc in docs:
+			print("deleting attendance")
+			doc.reference.delete()
+
 		city_ref = db.collection(u'free').document(u'Attendance_track')
 		city_ref.set({u'Last_attendance': new_now }, merge=True)
+		
 		print("new time is ", new_now)
 		
 	return render(request, 'VideoPage.html')
@@ -523,7 +524,7 @@ def monitor_students(request):
 	if request.user.is_anonymous:
 		return redirect('/login_user')
 	
-	# --Start--> Getting images to show on the encode page
+	# --Start--> Getting video of monitor students page
 
 	return render(request, 'MonitorStudentsPage.html')
 
@@ -560,3 +561,42 @@ def delete_csv(request, file_name):
 
 	else:
 		return redirect('/recent_att')
+	
+
+# -- app_settings --\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+def app_settings(request):
+	if request.user.is_anonymous:
+		return redirect('/login_user')
+	
+	print("Hello from edit settings")
+	if request.method == 'POST':
+		roll = settings_model.objects.get(id_settings = 1)
+		form  = settings_form(request.POST,  instance=roll)
+		# print(type(form))
+		if form.is_valid():
+			form.save()
+
+			messages.success(request,f"Updated!")
+			return redirect('/app_settings')
+	else:
+		roll = settings_model.objects.get(id_settings = 1)
+		form  = settings_form(instance= roll)
+		print("Hello from else of settings")
+
+
+	return render(request, 'app_settings.html', {'form': form})
+
+
+def end_session(request):
+	if request.user.is_anonymous:
+		return redirect('/login_user')
+	
+	users_ref = db.collection(u'Alerts')
+	docs = users_ref.stream()
+	for doc in docs:
+		print("Deleting Alerts")
+		doc.reference.delete()
+
+	messages.success(request,"Alerts Deleted!")
+	return redirect('/monitor_students')

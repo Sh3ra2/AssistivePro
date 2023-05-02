@@ -1,7 +1,7 @@
 import cv2
 import mediapipe as mp
 import time
-
+from .models import settings_model
 # Initialize MediaPipe Face Mesh and Drawing utilities
 mp_face_mesh = mp.solutions.face_mesh
 mp_drawing = mp.solutions.drawing_utils
@@ -10,6 +10,9 @@ face_mesh = mp_face_mesh.FaceMesh()
 countL = 0
 countR = 0
 def detect_head_turns(frame, left_count, right_count, state, start_time):
+
+    req_count_time = settings_model.objects.get(id_settings = 1).head_count_time_sec
+    # print("req data is", req_count_time)
 
     # Function to calculate face direction
     def estimate_face_direction(landmarks):
@@ -63,12 +66,12 @@ def detect_head_turns(frame, left_count, right_count, state, start_time):
             elif state != head_pose_label:
                 state = head_pose_label
 
-        # Reset counts after 60 seconds
+        # Reset counts after  seconds
         current_time = time.time()
-        if current_time - start_time >= 60:
+        if current_time - start_time >= req_count_time:
             left_count = 0
             right_count = 0
             start_time = time.time()
-            print("Counts reset after 60 seconds")
+            # print("Conter restarted after time limit")
 
     return left_count, right_count, state, start_time, frame

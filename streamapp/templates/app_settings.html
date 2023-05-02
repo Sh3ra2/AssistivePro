@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block page_title %}Settings{% endblock page_title %}
+
+
+{% block page_body %}
+<body>
+<!-- Data Block Starts -->
+<div class="student_add_page_card">
+    
+    <div class="card-body py-8 px-md-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold mb-5" style="margin-top:20px;"><u>Settings</u></h2>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+            
+                    <div class="row">
+
+                        {% comment %} Hide form so it cant be changed, but it has to be passed {% endcomment %}
+                        {{form.id_settings.as_hidden}}    
+                                  
+
+                      <!-- Name -->
+                        <div class="input-group mb-5">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Update Attendance After Minutes :</span>
+                            </div>
+                            {{form.attendance_update_time_min}}
+                        </div>
+
+                        <!-- Department -->
+                        <div class="input-group mb-5">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Head Turn Count :</span>
+                            </div>
+                            {{form.head_turn_count}}
+                        </div>
+                    
+                        <!-- Semester -->
+                        <div class="input-group mb-5">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Update Head Turn After Secounds :</span>
+                            </div>
+                            {{form.head_count_time_sec}}
+                        </div>
+                        
+                        <input class="btn btn-primary" type="submit" value="Update" style="margin-bottom:30px;">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+{% endblock page_body %}

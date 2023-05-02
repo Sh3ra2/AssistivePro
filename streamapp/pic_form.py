@@ -1,6 +1,5 @@
 from django import forms
-from .models import profile_image
-from .models import camera_model
+from .models import profile_image, camera_model, settings_model
 
 
 DEPARTMENT_CHOICES = [
@@ -86,3 +85,30 @@ class camera_form(forms.ModelForm):
     class Meta:
         model = camera_model
         fields = '__all__'
+
+class settings_form(forms.ModelForm):
+
+    id_settings = forms.IntegerField(widget= forms.NumberInput(attrs={
+        "class" : "form-control",
+    }))
+
+    attendance_update_time_min = forms.IntegerField(widget= forms.NumberInput(attrs={
+        "class" : "form-control",
+        "placeholder" : "After how many minutes attendance is saved",
+    }))
+
+    head_turn_count = forms.IntegerField(widget= forms.NumberInput(attrs={
+        "class" : "form-control",
+        "placeholder" : "No of times a person turns head and gets pictured",
+    }))
+
+    head_count_time_sec = forms.IntegerField(widget= forms.NumberInput(attrs={
+        "class" : "form-control",
+        "placeholder" : "Head turn counts resets every __ secounds",
+    }))
+
+
+    class Meta:
+        model = settings_model
+        fields = '__all__'
+        

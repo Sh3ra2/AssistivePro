@@ -7,6 +7,7 @@ from django.views import View
 from django.http import HttpResponse
 from .heads_detector import FROZEN_GRAPH_HEAD
 
+
 class HeadDetectionView(object):
     def __init__(self):
         PATH_TO_CKPT_HEAD = 'static/HEAD_DETECTION_300x300_ssd_mobilenetv2.pb'

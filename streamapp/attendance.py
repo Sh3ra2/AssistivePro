@@ -85,8 +85,6 @@ class attendance(object):
                             ref.child('Total_attendance').set(studentInfo['Total_attendance'])
                             ref.child('Last_attendance').set(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
-        # frame_flip = cv2.flip(img, 1)
-        # ret, jpeg = cv2.imencode('.jpg', frame_flip)
-        # return jpeg.tobytes()
+        
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         return img

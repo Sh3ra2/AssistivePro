@@ -13,6 +13,7 @@ import cv2
 import firebase_admin
 from firebase_admin import credentials, firestore, storage, db
 from datetime import datetime
+from .models import settings_model
 
 
 # <-------------- Accessing database -------------->
@@ -56,6 +57,9 @@ class FROZEN_GRAPH_HEAD():
         boxes = np.squeeze(boxes)
         scores = np.squeeze(scores)
         classes = np.squeeze(classes).astype(np.int32)
+
+        req_count_turns = settings_model.objects.get(id_settings = 1).head_turn_count
+        print("req data is", req_count_turns)
 
         heads = list()
         idx = 1
@@ -103,7 +107,7 @@ class FROZEN_GRAPH_HEAD():
                 cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2, 8)
                 cv2.putText(image, 'score: {:.2f}%'.format(score), (left, bottom+35), 0, 0.55, (0, 255, 255), 2)
 
-                if (self.countL == 7 or self.countR == 7):
+                if (self.countL == req_count_turns or self.countR == req_count_turns):
                     cv2.rectangle(image, (left, top), (right, bottom), (0, 0, 225), 2, 8)
                     timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
                     # -- naming image
@@ -151,9 +155,11 @@ class FROZEN_GRAPH_HEAD():
         
         # Actual detection.
         start_time = time.time()
+        
         (boxes, scores, classes, num_detections) = self.sess.run(
             [boxes, scores, classes, num_detections],
             feed_dict={image_tensor: image_np_expanded})
+        
         elapsed_time = time.time() - start_time
         self.inference_list.append(elapsed_time)
         self.count = self.count + 1

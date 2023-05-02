@@ -46,3 +46,9 @@ class camera_model(models.Model):
     ip  = models.CharField(max_length=122, default="None", blank= True, null=True)
     location = models.CharField(max_length=122, default="None", blank= True, null=True)
     note = models.CharField(max_length=122, default="None", blank= True, null=True)
+
+class settings_model(models.Model):
+    id_settings = models.IntegerField(blank= True, null=True, unique=True, default=1)
+    attendance_update_time_min = models.IntegerField(blank= True, null=True, unique=True, default=30)
+    head_turn_count =  models.IntegerField(blank= True, null=True, unique=True, default=7)
+    head_count_time_sec = models.IntegerField(blank= True, null=True, unique=True, default=60)
