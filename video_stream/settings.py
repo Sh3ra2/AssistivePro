@@ -27,7 +27,7 @@ SECRET_KEY = '1lxk3a6m+6c-@mr5i3k6(4sv73-f@s=o*j2@#^)e^^i-px4!kj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['159.65.8.226', '127.0.0.1', 'assistivepro', 'www.assistivepro.pro']
+ALLOWED_HOSTS = ['159.65.8.226', '127.0.0.1', 'assistivepro.pro', 'www.assistivepro.pro']
 
 
 # Application definition
@@ -127,7 +127,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    '/var/www/projectdir/AssistivePro/env/lib/python3.10/site-packages/django/contrib/admin/static',
+    '/home/sheraz/projectdir/AssistivePro/env/lib/python3.10/site-packages/django/contrib/admin/static',
 ]
 
 mimetypes.add_type("text/css", ".css", True)
