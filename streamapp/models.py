@@ -52,3 +52,5 @@ class settings_model(models.Model):
     attendance_update_time_min = models.IntegerField(blank= True, null=True, unique=True, default=30)
     head_turn_count =  models.IntegerField(blank= True, null=True, unique=True, default=7)
     head_count_time_sec = models.IntegerField(blank= True, null=True, unique=True, default=60)
+    left_head_threshHold = models.IntegerField(blank= True, null=True, unique=True, default=-6)
+    right_head_threshHold = models.IntegerField(blank= True, null=True, unique=True, default=6)

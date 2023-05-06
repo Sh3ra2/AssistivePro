@@ -35,6 +35,7 @@ class FROZEN_GRAPH_HEAD():
         self.countL = 0
         self.countR = 0
         self.state = "Center"
+        self.angle_face = 0
         self.start_time = time.time()
 
         self.detection_graph = tf.Graph()
@@ -58,6 +59,7 @@ class FROZEN_GRAPH_HEAD():
         scores = np.squeeze(scores)
         classes = np.squeeze(classes).astype(np.int32)
 
+        # -- Counts allowed are given to function
         req_count_turns = settings_model.objects.get(id_settings = 1).head_turn_count
         print("req data is", req_count_turns)
 
@@ -74,8 +76,8 @@ class FROZEN_GRAPH_HEAD():
 
                 cropped_head = np.array(image[top:bottom, left:right])
 
-                self.countL, self.countR, self.state, self.start_time, processed_frame = detect_head_turns(cropped_head, self.countL, self.countR, self.state, self.start_time)
-        
+                self.countL, self.countR, self.state, self.start_time, processed_frame, self.angle_face = detect_head_turns(cropped_head, self.countL, self.countR, self.state, self.start_time, self.angle_face)
+                # print("angle face is ", self.angle_face)
                 width = right - left
                 height = bottom - top
                 bottom_mid = (left + int(width / 2), top + height)
@@ -94,6 +96,7 @@ class FROZEN_GRAPH_HEAD():
                     "confidence": confidence,
                     "label": None,
                     "bottom_mid": bottom_mid,
+                    "face_angle" : self.angle_face,
                     "model_type": 'FROZEN_GRAPH',
                     "count_left": self.countL,
                     "count_right": self.countR,
@@ -105,7 +108,8 @@ class FROZEN_GRAPH_HEAD():
                 cv2.putText(image, f'Left: {self.countL} || Right: {self.countR}', (left, top-4), 0, 0.55, (0, 255, 255), 2)
                 cv2.putText(image, f'ID: {idx}', (left, bottom+18), 0, 0.55, (0, 255, 255), 2)
                 cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2, 8)
-                cv2.putText(image, 'score: {:.2f}%'.format(score), (left, bottom+35), 0, 0.55, (0, 255, 255), 2)
+                # cv2.putText(image, 'score: {:.2f}%'.format(score), (left, bottom+35), 0, 0.55, (0, 255, 255), 2)
+                cv2.putText(image, 'Angle: {:.2f}%'.format(self.angle_face), (left, bottom+35), 0, 0.55, (0, 255, 255), 2)
 
                 if (self.countL == req_count_turns or self.countR == req_count_turns):
                     cv2.rectangle(image, (left, top), (right, bottom), (0, 0, 225), 2, 8)

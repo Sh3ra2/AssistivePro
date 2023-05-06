@@ -127,7 +127,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    '/home/sheraz/projectdir/AssistivePro/env/lib/python3.10/site-packages/django/contrib/admin/static',
+    '/var/www/projectdir/AssistivePro/env/lib/python3.10/site-packages/django/contrib/admin/static',
 ]
 
 mimetypes.add_type("text/css", ".css", True)

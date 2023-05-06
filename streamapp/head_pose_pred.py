@@ -9,9 +9,11 @@ face_mesh = mp_face_mesh.FaceMesh()
 
 countL = 0
 countR = 0
-def detect_head_turns(frame, left_count, right_count, state, start_time):
+def detect_head_turns(frame, left_count, right_count, state, start_time, angle_f):
 
     req_count_time = settings_model.objects.get(id_settings = 1).head_count_time_sec
+    left_move = settings_model.objects.get(id_settings = 1).left_head_threshHold
+    right_move = settings_model.objects.get(id_settings = 1).right_head_threshHold
     # print("req data is", req_count_time)
 
     # Function to calculate face direction
@@ -32,15 +34,15 @@ def detect_head_turns(frame, left_count, right_count, state, start_time):
         return angle
 
     # Function to label head pose based on the angle
-    def label_head_pose(angle, left_threshold=-6, right_threshold=6):
-        print(angle)
+    def label_head_pose(angle, left_threshold = left_move, right_threshold = right_move):
+        
         if angle < left_threshold:
             return "Right"
         elif angle > right_threshold:
             return "Left"
-        else:
+        else:   
             return "Center"
-
+    # print("angle f right after function ", angle_f)
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
     # Process the frame and get landmarks
@@ -53,6 +55,7 @@ def detect_head_turns(frame, left_count, right_count, state, start_time):
 
             # Estimate face direction
             face_direction = estimate_face_direction(face_landmarks.landmark)
+            angle_f = face_direction
             head_pose_label = label_head_pose(face_direction)
 
             # Update counters and state
@@ -73,5 +76,5 @@ def detect_head_turns(frame, left_count, right_count, state, start_time):
             right_count = 0
             start_time = time.time()
             # print("Conter restarted after time limit")
-
-    return left_count, right_count, state, start_time, frame
+    print("angle after function is  ",angle_f)
+    return left_count, right_count, state, start_time, frame, angle_f

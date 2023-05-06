@@ -107,6 +107,17 @@ class settings_form(forms.ModelForm):
         "placeholder" : "Head turn counts resets every __ secounds",
     }))
 
+    left_head_threshHold = forms.IntegerField(widget= forms.NumberInput(attrs={
+        "class" : "form-control",
+        "placeholder" : "-ve only, Left angle till which one can look",
+    }))
+
+    right_head_threshHold = forms.IntegerField(widget= forms.NumberInput(attrs={
+        "class" : "form-control",
+        "placeholder" : "+ve only, Right angle till which one can look",
+    }))
+
+
 
     class Meta:
         model = settings_model
