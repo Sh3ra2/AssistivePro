@@ -2,6 +2,9 @@
 
 {% load static %}
 
+<!-- Custom styles for this template -->
+<link rel="stylesheet" type="text/css" href="{% static 'BaseStyle.css' %}">
+
 {% block page_title %}Settings{% endblock page_title %}
 
 {% block banner %}
@@ -28,43 +31,48 @@
 
                       <!-- Name -->
                         <div class="input-group mb-5">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Update Attendance After Minutes :</span>
+                            <div class="input-group-prepend"
+                            style="background:aqua; place-self:center;padding:10px;color:black;font-weight:600;border-radius:7px 0px 7px 0px;">
+                                <label style="width:260px;text-align:center;">Update Attendance After Minutes :</label>
                             </div>
                             {{form.attendance_update_time_min}}
                         </div>
 
                         <!-- Department -->
                         <div class="input-group mb-5">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Head Turn Count :</span>
+                            <div class="input-group-prepend"
+                            style="background:aqua; place-self:center;padding:10px;color:black;font-weight:600;border-radius:7px 0px 7px 0px;">
+                                <label style="width:260px;text-align:center;">Head Turn Count :</label>
                             </div>
                             {{form.head_turn_count}}
                         </div>
                     
                         <!-- Semester -->
                         <div class="input-group mb-5">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Update Head Turn After Secounds :</span>
+                            <div class="input-group-prepend"
+                            style="background:aqua; place-self:center;padding:10px;color:black;font-weight:600;border-radius:7px 0px 7px 0px;">
+                                <label style="width:260px;text-align:center;">Update Head Turn After Secounds :</label>
                             </div>
                             {{form.head_count_time_sec}}
                         </div>
 
                         <div class="input-group mb-5">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Left Turn Threshold :</span>
+                            <div class="input-group-prepend"
+                            style="background:aqua; place-self:center;padding:10px;color:black;font-weight:600;border-radius:7px 0px 7px 0px;">
+                                <label style="width:260px;text-align:center;">Left Turn Threshold :</label>
                             </div>
                             {{form.left_head_threshHold}}
                         </div>
 
                         <div class="input-group mb-5">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Right Turn Threshold :</span>
+                            <div class="input-group-prepend"
+                            style="background:aqua; place-self:center;padding:10px;color:black;font-weight:600;border-radius:7px 0px 7px 0px;">
+                                <label style="width:260px;text-align:center;">Right Turn Threshold :</label>
                             </div>
                             {{form.right_head_threshHold}}
                         </div>
                         
-                        <input class="btn btn-primary" type="submit" value="Update" style="margin-bottom:30px;">
+                        <input class="btn btn-primary" type="submit" value="Update" style="font-weight:700;color:black;background:aqua;margin-bottom:30px;border:5px double white;">
                     </div>
                 </form>
             </div>
