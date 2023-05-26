@@ -86,7 +86,7 @@
                         document.getElementById("stopWebcam").disabled = false;
                     });
             }
-            frameInterval = setInterval(sendFrameToServer, 100);  // Send frames every 1000ms (1 second)
+            frameInterval = setInterval(sendFrameToServer, 300);  // Send frames every 1000ms (1 second)
         }
         
         function sendFrameToServer() {
@@ -96,7 +96,7 @@
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                 canvas.toBlob(function(blob) {
                     let formData = new FormData();
-                    formData.append('frame', blob);
+                    formData.append('frame', blob, {quality: 0.5});
                     formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
         
                     $.ajax({

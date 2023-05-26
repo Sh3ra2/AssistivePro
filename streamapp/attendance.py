@@ -39,6 +39,8 @@ class attendance(object):
         id = -1
         imgStudent = []
 
+        print("Processing faces")
+
         imgS = cv2.resize(img, (0, 0), None, 0.25, 0.25)
         imgS = cv2.cvtColor(imgS, cv2.COLOR_BGR2RGB)
 
@@ -49,8 +51,9 @@ class attendance(object):
             for encodeFace, faceLoc in zip(encodeCurFrame, faceCurFrame):
                 matches = face_recognition.compare_faces(self.encodeListKnown, encodeFace)
                 faceDis = face_recognition.face_distance(self.encodeListKnown, encodeFace)
+                print("FaceDIs is ",faceDis)
 
-                if matches and faceDis:
+                if matches and faceDis.any():
                     matchIndex = np.argmin(faceDis)
 
                     if matches[matchIndex]:
@@ -75,15 +78,15 @@ class attendance(object):
                             u'id': id
                         }, merge=True)
 
-                        datetimeObject = datetime.strptime(studentInfo['Last_attendance'],
-                                                        "%Y-%m-%d %H:%M:%S")
-                        secondsElapsed = (datetime.now() - datetimeObject).total_seconds()
+                        # datetimeObject = datetime.strptime(studentInfo['Last_attendance'],
+                        #                                 "%Y-%m-%d %H:%M:%S")
+                        # secondsElapsed = (datetime.now() - datetimeObject).total_seconds()
 
-                        if secondsElapsed > 30:
-                            ref = db.reference(f'Students/{id}')
-                            studentInfo['Total_attendance'] += 1
-                            ref.child('Total_attendance').set(studentInfo['Total_attendance'])
-                            ref.child('Last_attendance').set(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+                        # if secondsElapsed > 30:
+                        #     ref = db.reference(f'Students/{id}')
+                        #     studentInfo['Total_attendance'] += 1
+                        #     ref.child('Total_attendance').set(studentInfo['Total_attendance'])
+                        #     ref.child('Last_attendance').set(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
         
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)

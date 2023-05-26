@@ -458,54 +458,54 @@ def video_data(request):
 		return redirect('/login_user')
 	
 
-	# --Start--> Getting last attendance from firestore ---\
-	print("Hello form video data from functions")
-	users_ref = db.collection(u'free').document(u'Attendance_track')
-	# --- get data in stream
-	docs = users_ref.get()
-	print("docs has ",docs)
+	# # --Start--> Getting last attendance from firestore ---\
+	# print("Hello form video data from functions")
+	# users_ref = db.collection(u'free').document(u'Attendance_track')
+	# # --- get data in stream
+	# docs = users_ref.get()
+	# print("docs has ",docs)
 
-	if docs.exists:
-		print(f'Document data: {docs.to_dict()}')
-		datetime_dict = docs.to_dict()  # Convert method to dictionary
-		last_att = list(datetime_dict.values())[0]  # Get first value from dictionary
-		print("Last attendance date is ", last_att)
-	else:
-		print('Document not found!')
+	# if docs.exists:
+	# 	print(f'Document data: {docs.to_dict()}')
+	# 	datetime_dict = docs.to_dict()  # Convert method to dictionary
+	# 	last_att = list(datetime_dict.values())[0]  # Get first value from dictionary
+	# 	print("Last attendance date is ", last_att)
+	# else:
+	# 	print('Document not found!')
 
 
-	# --- getting current date and time
-	now = datetime.datetime.now()
-	new_now = now.replace(microsecond=0).strftime('%Y-%m-%d %H:%M:%S')
-	print("now is ", new_now)
+	# # --- getting current date and time
+	# now = datetime.datetime.now()
+	# new_now = now.replace(microsecond=0).strftime('%Y-%m-%d %H:%M:%S')
+	# print("now is ", new_now)
 	
-	# --- time difference is
-	a = time_difference(last_att, new_now)
-	print("time diff is ",a, " min")
+	# # --- time difference is
+	# a = time_difference(last_att, new_now)
+	# print("time diff is ",a, " min")
 	
-	req_data = settings_model.objects.get(id_settings = 1).attendance_update_time_min
-	print("req data in minutes is ", req_data)
+	# req_data = settings_model.objects.get(id_settings = 1).attendance_update_time_min
+	# print("req data in minutes is ", req_data)
 
-	# --- updating last attendance in firestore
-	if a > req_data:
-		at = last_att.replace(":","")
-		filename = f'media/att_data/{at}.csv'
+	# # --- updating last attendance in firestore
+	# if a > req_data:
+	# 	at = last_att.replace(":","")
+	# 	filename = f'media/att_data/{at}.csv'
 
-		# -- function to make csv of attendance present in firestore
-		export_firestore_to_csv('recent_att', filename)
+	# 	# -- function to make csv of attendance present in firestore
+	# 	export_firestore_to_csv('recent_att', filename)
 
-		# -- delete data in store
-		users_ref = db.collection(u'recent_att')
-		# get data in stream-------------------------
-		docs = users_ref.stream()
-		for doc in docs:
-			print("deleting attendance")
-			doc.reference.delete()
+	# 	# -- delete data in store
+	# 	users_ref = db.collection(u'recent_att')
+	# 	# get data in stream-------------------------
+	# 	docs = users_ref.stream()
+	# 	for doc in docs:
+	# 		print("deleting attendance")
+	# 		doc.reference.delete()
 
-		city_ref = db.collection(u'free').document(u'Attendance_track')
-		city_ref.set({u'Last_attendance': new_now }, merge=True)
+	# 	city_ref = db.collection(u'free').document(u'Attendance_track')
+	# 	city_ref.set({u'Last_attendance': new_now }, merge=True)
 		
-		print("new time is ", new_now)
+	# 	print("new time is ", new_now)
 		
 	return render(request, 'VideoPage.html')
 
@@ -600,3 +600,54 @@ def end_session(request):
 
 	messages.success(request,"Alerts Deleted!")
 	return redirect('/monitor_students')
+
+
+def end_session_att(request):
+	if request.user.is_anonymous:
+		return redirect('/login_user')
+	
+	
+	# --Start--> Getting last attendance from firestore ---\
+	print("Hello from del att")
+	users_ref = db.collection(u'free').document(u'Attendance_track')
+	# --- get data in stream
+	docs = users_ref.get()
+	print("docs has ",docs)
+
+	if docs.exists:
+		print(f'Document data: {docs.to_dict()}')
+		datetime_dict = docs.to_dict()  # Convert method to dictionary
+		last_att = list(datetime_dict.values())[0]  # Get first value from dictionary
+		print("Last attendance date is ", last_att)
+	else:
+		print('Document not found!')
+
+
+	# --- getting current date and time
+	now = datetime.datetime.now()
+	new_now = now.replace(microsecond=0).strftime('%Y-%m-%d %H:%M:%S')
+	print("now is ", new_now)
+
+	# --- updating last attendance in firestore
+	
+	at = new_now.replace(":","")
+	filename = f'media/att_data/{at}.csv'
+
+	# -- function to make csv of attendance present in firestore
+	export_firestore_to_csv('recent_att', filename)
+
+	# -- delete data in store
+	users_ref = db.collection(u'recent_att')
+	# get data in stream-------------------------
+	docs = users_ref.stream()
+	for doc in docs:
+		print("deleting attendance")
+		doc.reference.delete()
+
+	city_ref = db.collection(u'free').document(u'Attendance_track')
+	city_ref.set({u'Last_attendance': new_now }, merge=True)
+	
+	print("new time is ", new_now)
+
+	messages.success(request,"Attendance Saved!")
+	return redirect('/video_data')

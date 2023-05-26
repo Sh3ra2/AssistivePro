@@ -29,4 +29,5 @@ urlpatterns = [
     path('delete_csv/<str:file_name>/', views.delete_csv, name='delete_csv'),
     path('app_settings', views.app_settings, name='app_settings'),
     path('end_session', views.end_session, name='end_session'),
+    path('end_session_att', views.end_session_att, name='end_session_att'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
