@@ -49,6 +49,7 @@
                                 {{form.photo}}     
                             </div>
                         </div>
+                        {% comment %} {{form.user}}={{request.user}} {% endcomment %}
                         <!-- id -->
                         <div class="input-group mb-5">
                             <div class="form-group"
@@ -76,7 +77,10 @@
                             </div>
                             {{form.department}}
                         </div>
-                    
+                        
+                        {% comment %} User field {% endcomment %}
+                        {{form.user.as_hidden}}
+                        
                         <!-- Semester -->
                         <div class="input-group mb-5">
                             <div class="form-group"

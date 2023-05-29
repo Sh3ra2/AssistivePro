@@ -136,7 +136,7 @@ def new_data(request):
 
 		if form.is_valid():
 			form.save()
-		
+			
 			# -- Getting index of data to upload to fireabse
 			d = (len(profile_image.objects.all())-1)
 
@@ -185,7 +185,7 @@ def new_data(request):
 			messages.success(request,"Error")
 			return redirect('/view_data')
 
-	form = image_form()
+	form = image_form(initial={'user': request.user})
 	return render(request, 'NewData.html', {'form': form})
 
 
@@ -206,7 +206,7 @@ def view_data(request):
 		my_dict[a] = b
 	
 
-	context = profile_image.objects.all()
+	context = profile_image.objects.filter(user = request.user)
 
 	print("Context is ", context)
 
@@ -571,7 +571,7 @@ def app_settings(request):
 	
 	print("Hello from edit settings")
 	if request.method == 'POST':
-		roll = settings_model.objects.get(id_settings = 1)
+		roll = settings_model.objects.get(user = request.user)
 		form  = settings_form(request.POST,  instance=roll)
 		# print(type(form))
 		if form.is_valid():
@@ -580,7 +580,7 @@ def app_settings(request):
 			messages.success(request,f"Updated!")
 			return redirect('/app_settings')
 	else:
-		roll = settings_model.objects.get(id_settings = 1)
+		roll = settings_model.objects.get(user = request.user)
 		form  = settings_form(instance= roll)
 		print("Hello from else of settings")
 

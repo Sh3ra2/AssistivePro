@@ -1,5 +1,6 @@
 from django import forms
 from .models import profile_image, camera_model, settings_model
+from django.contrib.auth.models import User
 
 
 DEPARTMENT_CHOICES = [
@@ -91,6 +92,11 @@ class settings_form(forms.ModelForm):
     id_settings = forms.IntegerField(widget= forms.NumberInput(attrs={
         "class" : "form-control",
     }))
+
+    # -- user is being built here
+    user = forms.ModelChoiceField(queryset=User.objects.all(), widget=forms.Select(attrs={
+        "class": "form-control",
+    }), label='User')
 
     attendance_update_time_min = forms.IntegerField(widget= forms.NumberInput(attrs={
         "class" : "form-control",
