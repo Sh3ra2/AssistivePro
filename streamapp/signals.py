@@ -13,3 +13,6 @@ def create_user_settings(sender, instance, created, **kwargs):
             # Create directory for the user's files
             user_folder = f'media/att_data/{instance.username}'
             os.makedirs(user_folder, exist_ok=True)
+
+            user_students = f'media/encode_images/{instance.username}'
+            os.makedirs(user_students, exist_ok=True)

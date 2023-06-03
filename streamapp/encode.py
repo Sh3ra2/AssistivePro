@@ -2,14 +2,16 @@ import cv2
 import face_recognition
 import pickle
 import os
+from django.contrib.auth.models import User
 
 from firebase_admin import credentials, firestore, storage
 
 
-def encode_process():
+def encode_process(userfolder):
 
     #importing faces of students
-    folderModePath = 'media/encode_images'
+    folderModePath = f'media/encode_images/{userfolder}'
+    print("User folder in encode py file is ", folderModePath )
     traindatalist = os.listdir(folderModePath)
     dataList = []
     student_id = []

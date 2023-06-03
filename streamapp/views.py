@@ -84,6 +84,7 @@ markattendance = attendance()
 def video_feed(request):
 	if request.method == 'POST':
 		# print(request.FILES)  # Line to log the request.FILES dictionary
+		
 		frame = request.FILES['frame']
 		frame_bytes = frame.read()
 		frame_array = np.asarray(bytearray(frame_bytes), dtype=np.uint8)
@@ -95,6 +96,7 @@ def video_feed(request):
 		buffer = io.BytesIO()
 		frame_gray_pil.save(buffer, format='JPEG')
 		frame_gray_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+		
 
 		return JsonResponse({'grayscale_frame': f'data:image/jpeg;base64,{frame_gray_base64}'})
 
@@ -140,17 +142,12 @@ def new_data(request):
 			# -- Getting index of data to upload to fireabse
 			d = (len(profile_image.objects.all())-1)
 
-			# -- Getting data
+			# -- Getting data to upload to firebase
 			rollnumber = profile_image.objects.all()[d].roll_num
-			# print("Roll Number: ",profile_image.objects.all()[d].roll_num, "Type:",type(profile_image.objects.all()[d].roll_num))
 			st_name = profile_image.objects.all()[d].name
-			# print("Name: ",profile_image.objects.all()[d].name, "Type:",type(profile_image.objects.all()[d].name))
 			department = profile_image.objects.all()[d].department
-			# print("department: ",profile_image.objects.all()[d].department, "Type:",type(profile_image.objects.all()[d].department))
 			semester = profile_image.objects.all()[d].semester
-			# print("Semester: ",profile_image.objects.all()[d].semester, "Type:",type(profile_image.objects.all()[d].semester))
 			status = profile_image.objects.all()[d].status
-			# print("Status ",profile_image.objects.all()[d].status, "Type:",type(profile_image.objects.all()[d].status))
 			filename = profile_image.objects.all()[d].photo
 			
 			# -- Getting file from storage and renaming it
@@ -293,7 +290,7 @@ def delete_student(request, id):
 		db.collection(u'Students').document(str(id)).delete()
 
 		# -- delete user from encode folder
-		encode_folder = f'media/encode_images/{id}.jpg'
+		encode_folder = f'media/encode_images/{request.user}/{id}.jpg'
 		try:
     		# Attempt to delete the file
 			os.remove(encode_folder)
@@ -325,14 +322,19 @@ def encode_data(request):
 
 	# --Start--> Getting images to show on the encode page
 	print("Hi from encode view.py")
-	context = profile_image.objects.all()
+	context = profile_image.objects.filter(user = request.user)
 	images={}
 	for data in context:
-		print(data.roll_num)
+		print("images from blob are ", data.roll_num)
 
+		# -- initialize bucket
 		bucket = storage.bucket()
+		# -- get data from firebase
 		blob = bucket.blob(f'Data/{data.roll_num}.jpg')
-		dest = f'media/encode_images/{data.roll_num}.jpg'
+
+		# -- get image from bucket and save
+		dest = f'media/encode_images/{request.user}/{data.roll_num}.jpg'
+		
 		blob.download_to_filename(dest)
 		images[data.roll_num] = dest
 		print(images)
@@ -347,8 +349,9 @@ def encode_data(request):
 	# <--End-- Getting last attendance from firestore
 	# print("dict is ",my_dict)
 	i = len(context)
-
-	encode_process()
+	user = User.objects.get(username=request.user.username)
+	dfolder = user.get_username()
+	encode_process(dfolder)
 
 	return render(request, 'EncodeData.html', {"t_pics":i,"enc_data": images})
 
@@ -358,7 +361,7 @@ def pre_encode(request):
 		return redirect('/login_user')
 	
 	# --Start--> Getting images to show on the encode page
-	context = profile_image.objects.all()
+	context = profile_image.objects.filter(user = request.user)
 	
 	i = len(context)
 
@@ -457,56 +460,7 @@ def video_data(request):
 	if request.user.is_anonymous:
 		return redirect('/login_user')
 	
-
-	# # --Start--> Getting last attendance from firestore ---\
-	# print("Hello form video data from functions")
-	# users_ref = db.collection(u'free').document(u'Attendance_track')
-	# # --- get data in stream
-	# docs = users_ref.get()
-	# print("docs has ",docs)
-
-	# if docs.exists:
-	# 	print(f'Document data: {docs.to_dict()}')
-	# 	datetime_dict = docs.to_dict()  # Convert method to dictionary
-	# 	last_att = list(datetime_dict.values())[0]  # Get first value from dictionary
-	# 	print("Last attendance date is ", last_att)
-	# else:
-	# 	print('Document not found!')
-
-
-	# # --- getting current date and time
-	# now = datetime.datetime.now()
-	# new_now = now.replace(microsecond=0).strftime('%Y-%m-%d %H:%M:%S')
-	# print("now is ", new_now)
-	
-	# # --- time difference is
-	# a = time_difference(last_att, new_now)
-	# print("time diff is ",a, " min")
-	
-	# req_data = settings_model.objects.get(id_settings = 1).attendance_update_time_min
-	# print("req data in minutes is ", req_data)
-
-	# # --- updating last attendance in firestore
-	# if a > req_data:
-	# 	at = last_att.replace(":","")
-	# 	filename = f'media/att_data/{at}.csv'
-
-	# 	# -- function to make csv of attendance present in firestore
-	# 	export_firestore_to_csv('recent_att', filename)
-
-	# 	# -- delete data in store
-	# 	users_ref = db.collection(u'recent_att')
-	# 	# get data in stream-------------------------
-	# 	docs = users_ref.stream()
-	# 	for doc in docs:
-	# 		print("deleting attendance")
-	# 		doc.reference.delete()
-
-	# 	city_ref = db.collection(u'free').document(u'Attendance_track')
-	# 	city_ref.set({u'Last_attendance': new_now }, merge=True)
-		
-	# 	print("new time is ", new_now)
-		
+	markattendance.load_encode_file()
 	return render(request, 'VideoPage.html')
 
 
