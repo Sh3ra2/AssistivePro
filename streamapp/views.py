@@ -1,4 +1,4 @@
-# -- Importing curret files
+# -- Importing current files
 from django.shortcuts import render, redirect
 from django.http.response import StreamingHttpResponse
 from streamapp.attendance import attendance
@@ -536,7 +536,7 @@ def recent_att(request):
 	
 	# --Start--> Getting images to show on the encode page
 
-	files = os.listdir('media/att_data')
+	files = os.listdir(f'media/att_data/{request.user}')
 
 	return render(request, 'RecentAtt.html',{'files':files})
 
@@ -629,9 +629,12 @@ def end_session_att(request):
 	print("now is ", new_now)
 
 	# --- updating last attendance in firestore
-	
+	user_id = request.user.username # Get the user's ID
 	at = new_now.replace(":","")
-	filename = f'media/att_data/{at}.csv'
+	foldername = f'media/att_data/{user_id}'
+	filename = f'media/att_data/{user_id}/{at}.csv'
+	# Create the folder if it doesn't exist
+	os.makedirs(foldername, exist_ok=True)
 
 	# -- function to make csv of attendance present in firestore
 	export_firestore_to_csv('recent_att', filename)

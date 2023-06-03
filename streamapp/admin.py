@@ -9,7 +9,7 @@ admin.site.register(camera_model)
 admin.site.register(settings_model)
 
 class  image_admin(admin.ModelAdmin):
-    list_display = ['id','photo', 'roll_num', 'name', 'department', 'semester', 'status']
+    list_display = ['id', 'user','photo', 'roll_num', 'name', 'department', 'semester', 'status']
 
 class  camera_admin(admin.ModelAdmin):
     list_display = ['Main_id','cam_id','ip', 'location', 'note']

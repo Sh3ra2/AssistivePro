@@ -30,8 +30,6 @@ STATUS_CHOICES = [
 
 # Create your models here.
 
-
-
 class profile_image(models.Model):
     id = models.AutoField(primary_key=True)
     # --user being added
@@ -44,12 +42,14 @@ class profile_image(models.Model):
     semester = models.CharField(max_length=122, default="None", blank= True, null=True )
     status = models.CharField(max_length=122, default="None", blank= True, null=True )
 
+
 class camera_model(models.Model):
     Main_id = models.AutoField(primary_key=True)
     cam_id = models.IntegerField(blank= True, null=True, unique=True)
     ip  = models.CharField(max_length=122, default="None", blank= True, null=True)
     location = models.CharField(max_length=122, default="None", blank= True, null=True)
     note = models.CharField(max_length=122, default="None", blank= True, null=True)
+
 
 class settings_model(models.Model):
     id_settings = models.IntegerField(primary_key=True)
