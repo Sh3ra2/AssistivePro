@@ -306,7 +306,7 @@ def delete_student(request, id):
 
 
 
-		messages.success(request,f"Roll Nuber {id} Deleted!")
+		messages.success(request,f"Roll Number {id} Deleted!")
 		return redirect('/view_data')
 
 	# -- after deletion redirect user to view data page
@@ -537,7 +537,6 @@ def app_settings(request):
 		roll = settings_model.objects.get(user = request.user)
 		form  = settings_form(instance= roll)
 		print("Hello from else of settings")
-
 
 	return render(request, 'app_settings.html', {'form': form})
 
