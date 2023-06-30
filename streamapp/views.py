@@ -506,7 +506,7 @@ def download_file(request, file_name):
 
 
 def delete_csv(request, file_name):
-	file_path = os.path.join('media', "att_data", file_name)
+	file_path = os.path.join('media', "att_data",f'{request.user}', file_name)
     
 	if os.path.exists(file_path):
 		os.remove(file_path)
