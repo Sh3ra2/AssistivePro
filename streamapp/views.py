@@ -496,7 +496,7 @@ def recent_att(request):
 
 
 def download_file(request, file_name):
-    file_path = os.path.join('media', 'att_data', file_name)
+    file_path = os.path.join('media', 'att_data', f'{request.user}', file_name)
     if os.path.exists(file_path):
         response = FileResponse(open(file_path, 'rb'), content_type='application/csv')
         response['Content-Disposition'] = f'attachment; filename="{file_name}"'
