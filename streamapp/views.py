@@ -114,7 +114,7 @@ def monitor_students_feed(request):
 		frame_bgr = cv2.imdecode(frame_array, cv2.IMREAD_COLOR)
 		# frame_gray = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2GRAY)
 
-		frame_gray = HeadDet.get_frame(frame_bgr)
+		frame_gray = HeadDet.get_frame(frame_bgr, f'{request.user.id}')
 		
 		frame_gray_pil = Image.fromarray(frame_gray)
 		buffer = io.BytesIO()

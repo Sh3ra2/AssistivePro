@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import time
 from .models import settings_model
+from django.contrib.auth.models import User
 # Initialize MediaPipe Face Mesh and Drawing utilities
 mp_face_mesh = mp.solutions.face_mesh
 mp_drawing = mp.solutions.drawing_utils
@@ -9,11 +10,18 @@ face_mesh = mp_face_mesh.FaceMesh()
 
 countL = 0
 countR = 0
-def detect_head_turns(frame, left_count, right_count, state, start_time, angle_f):
+def detect_head_turns(frame, left_count, right_count, state, start_time, angle_f, user):
 
-    req_count_time = settings_model.objects.get(id_settings = 1).head_count_time_sec
-    left_move = settings_model.objects.get(id_settings = 1).left_head_threshHold
-    right_move = settings_model.objects.get(id_settings = 1).right_head_threshHold
+    print("User is user ", user)
+    # print("User's id is ", user.id)
+    user_settings = settings_model.objects.get(user=user)
+    req_count_time = user_settings.head_count_time_sec
+    left_move = user_settings.left_head_threshHold
+    right_move = user_settings.right_head_threshHold
+
+    # req_count_time = settings_model.objects.get(id_settings = 1).head_count_time_sec
+    # left_move = settings_model.objects.get(id_settings = 1).left_head_threshHold
+    # right_move = settings_model.objects.get(id_settings = 1).right_head_threshHold
     # print("req data is", req_count_time)
 
     # Function to calculate face direction

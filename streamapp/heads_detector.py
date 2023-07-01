@@ -54,7 +54,7 @@ class FROZEN_GRAPH_HEAD():
             self.windowNotSet = True
 
     
-    def draw_bounding_box(self, image, scores, boxes, classes, im_width, im_height):
+    def draw_bounding_box(self, image, scores, boxes, classes, im_width, im_height, user):
         boxes = np.squeeze(boxes)
         scores = np.squeeze(scores)
         classes = np.squeeze(classes).astype(np.int32)
@@ -76,7 +76,7 @@ class FROZEN_GRAPH_HEAD():
 
                 cropped_head = np.array(image[top:bottom, left:right])
 
-                self.countL, self.countR, self.state, self.start_time, processed_frame, self.angle_face = detect_head_turns(cropped_head, self.countL, self.countR, self.state, self.start_time, self.angle_face)
+                self.countL, self.countR, self.state, self.start_time, processed_frame, self.angle_face = detect_head_turns(cropped_head, self.countL, self.countR, self.state, self.start_time, self.angle_face, user)
                 # print("angle face is ", self.angle_face)
                 width = right - left
                 height = bottom - top
@@ -138,7 +138,7 @@ class FROZEN_GRAPH_HEAD():
 
 
     # function for procesing input image
-    def run(self, image, im_width, im_height):
+    def run(self, image, im_width, im_height, user):
         """image: bgr image
         return (boxes, scores, classes, num_detections)
         """
@@ -173,7 +173,7 @@ class FROZEN_GRAPH_HEAD():
         # return (boxes, scores, classes, num_detections)
 
         # Draw bounding boxes on the image
-        image, heads = self.draw_bounding_box(image, scores, boxes, classes, im_width, im_height)
+        image, heads = self.draw_bounding_box(image, scores, boxes, classes, im_width, im_height, user)
         # print("heads has ", heads)
         
         
