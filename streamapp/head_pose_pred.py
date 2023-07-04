@@ -10,19 +10,17 @@ face_mesh = mp_face_mesh.FaceMesh()
 
 countL = 0
 countR = 0
-def detect_head_turns(frame, left_count, right_count, state, start_time, angle_f, user):
+def detect_head_turns(frame, left_count, right_count, state, start_time, angle_f, username):
 
-    print("User is user ", user)
-    # print("User's id is ", user.id)
-    user_settings = settings_model.objects.get(user=user)
-    req_count_time = user_settings.head_count_time_sec
-    left_move = user_settings.left_head_threshHold
-    right_move = user_settings.right_head_threshHold
+    user = User.objects.get(username=username)
+    user_settings_pre = settings_model.objects.get(user=user).id_settings
+    print("User is user ", user_settings_pre)
 
-    # req_count_time = settings_model.objects.get(id_settings = 1).head_count_time_sec
-    # left_move = settings_model.objects.get(id_settings = 1).left_head_threshHold
-    # right_move = settings_model.objects.get(id_settings = 1).right_head_threshHold
+    req_count_time = settings_model.objects.get(id_settings = user_settings_pre).head_count_time_sec
+    left_move = settings_model.objects.get(id_settings = user_settings_pre).left_head_threshHold
+    right_move = settings_model.objects.get(id_settings = user_settings_pre).right_head_threshHold
     # print("req data is", req_count_time)
+    # print("Left threshold is ", left_move, "right is ", right_move )
 
     # Function to calculate face direction
     def estimate_face_direction(landmarks):

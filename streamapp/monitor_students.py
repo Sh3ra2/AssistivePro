@@ -13,12 +13,12 @@ class HeadDetectionView(object):
         PATH_TO_CKPT_HEAD = 'static/HEAD_DETECTION_300x300_ssd_mobilenetv2.pb'
         self.head_detector = FROZEN_GRAPH_HEAD(PATH_TO_CKPT_HEAD)
 
-    def get_frame(self, inputframe, user):
+    def get_frame(self, inputframe, username):
         im_height, im_width, im_channel = inputframe.shape
         inputframe = cv2.flip(inputframe, 1)
 
         # -- Head-detection run model
-        image, heads = self.head_detector.run(inputframe, im_width, im_height, user)
+        image, heads = self.head_detector.run(inputframe, im_width, im_height, username)
         mimage = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         
         # ret, jpeg = cv2.imencode('.jpg', image)
