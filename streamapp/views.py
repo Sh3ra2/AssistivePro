@@ -597,7 +597,7 @@ def end_session_att(request):
 	# get data in stream-------------------------
 	docs = users_ref.stream()
 	for doc in docs:
-		print("deleting attendance")
+		print("deleting attendance for ", doc)
 		doc.reference.delete()
 
 	city_ref = db.collection(u'free').document(u'Attendance_track')
