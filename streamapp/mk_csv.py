@@ -25,12 +25,13 @@ def export_firestore_to_csv(collection_name, filename):
         writer = csv.writer(file)
 
         # Write the header row to the CSV file
-        writer.writerow(['id', 'id'])
+        writer.writerow(['id'])
         # Iterate over each document in the collection
         for doc in docs:
             # Get the document data as a dictionary
+            print("-------- file to write is ",doc)
             data = doc.to_dict()
-            writer.writerow([doc.id, data['id']])
+            writer.writerow([data['id']])
             # print(data)
         # print(data)
 
