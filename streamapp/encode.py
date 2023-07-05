@@ -48,7 +48,7 @@ def encode_process(userfolder):
     # print("Encod list known", encodeListKnown)
     encodeListKnown_WithIds = [encodeListKnown, student_id]
 
-    file = open("static/EncodedFace.p", "wb")
+    file = open("Encodings/EncodedFace.p", "wb")
     pickle.dump(encodeListKnown_WithIds,file)
     file.close()
 

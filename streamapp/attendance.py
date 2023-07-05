@@ -30,7 +30,7 @@ class attendance(object):
     def load_encode_file(self):
         # Load the encoding file
         print("Loading Encode File ...")
-        with open("static/EncodedFace.p", "rb") as file:
+        with open("Encodings/EncodedFace.p", "rb") as file:
             encodeListKnownWithIds = pickle.load(file)
             self.encodeListKnown, self.studentIds = encodeListKnownWithIds
         print("Loaded")
