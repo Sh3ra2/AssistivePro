@@ -132,8 +132,6 @@ class FROZEN_GRAPH_HEAD():
                     self.countL = 0
                     self.countR = 0
 
-                    
-            
         return image, heads
 
 
