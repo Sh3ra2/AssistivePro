@@ -30,7 +30,7 @@ def detect_head_turns(frame, left_count, right_count, state, start_time, angle_f
     # print("req count time is", req_count_time)
     # print("Left threshold is ", left_move, "right is ", right_move )
 
-    # Function to calculate face direction
+    # -- Function to calculate face direction
     def estimate_face_direction(landmarks):
         nose_tip = landmarks[4]
         chin = landmarks[152]
@@ -56,23 +56,23 @@ def detect_head_turns(frame, left_count, right_count, state, start_time, angle_f
             return "Left"
         else:   
             return "Center"
-    # print("angle f right after function ", angle_f)
+    
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    # Process the frame and get landmarks
+    # -- Process the frame and get landmarks
     result = face_mesh.process(rgb_frame)
 
     if result.multi_face_landmarks:
         for face_landmarks in result.multi_face_landmarks:
-            # Draw facial landmarks
+            # -- Draw facial landmarks
             mp_drawing.draw_landmarks(frame, face_landmarks, mp_face_mesh.FACEMESH_TESSELATION)
 
-            # Estimate face direction
+            # -- Estimate face direction
             face_direction = estimate_face_direction(face_landmarks.landmark)
             angle_f = face_direction
             head_pose_label = label_head_pose(face_direction)
 
-            # Update counters and state
+            # -- Update counters and state
             if state == "Center":
                 if head_pose_label == "Left":
                     left_count += 1
@@ -83,7 +83,7 @@ def detect_head_turns(frame, left_count, right_count, state, start_time, angle_f
             elif state != head_pose_label:
                 state = head_pose_label
 
-        # Reset counts after  seconds
+        # -- Reset counts after  seconds
         current_time = time.time()
         if current_time - start_time >= req_count_time:
             left_count = 0
@@ -91,7 +91,7 @@ def detect_head_turns(frame, left_count, right_count, state, start_time, angle_f
             start_time = time.time()
             # print("Conter restarted after time limit")
 
-    # Log a message
-    logging.info("angle after function is %s ",angle_f)
+    # -- Log a message
+    # logging.info("angle after function is %s ",angle_f)
     print("angle after function is  ",angle_f)
     return left_count, right_count, state, start_time, frame, angle_f
