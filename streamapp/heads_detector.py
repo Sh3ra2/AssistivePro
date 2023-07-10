@@ -130,7 +130,7 @@ class FROZEN_GRAPH_HEAD():
 
                 if (self.countL == req_count_turns or self.countR == req_count_turns):
                     print("Photo Being Sent")
-                    logger.critical("Photo Being Sent")
+                    logger.critical("Photo Being Saved")
 
                     cv2.rectangle(image, (left, top), (right, bottom), (0, 0, 225), 2, 8)
                     timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
@@ -140,21 +140,25 @@ class FROZEN_GRAPH_HEAD():
                     
                     # -- saving image 
                     cv2.imwrite(source_address, image, [cv2.IMWRITE_JPEG_QUALITY, compression_quality])
+                    logger.critical("Photo saved -> %s", source_address)
 
                     # -- Uplaoding file
                     bucket = storage.bucket()
                     blob = bucket.blob(f'Alerts/{file_name}')
+                    logger.critical("Blob being uploaded")
                     blob.upload_from_filename(source_address)
+                    logger.critical("Blob uploaded")
 
                     # -- uploading alert in firestore
                     name_for_upload = {
                         u'name': file_name,
                     }
                     alert_ref = db.collection(u'Alerts').add(name_for_upload)
+                    logger.critical("data store updated")
                     self.countL = 0
                     self.countR = 0
                     logger.critical("Photo Just Sent")
-                    print("Photo Just Sent")
+                    print("Photo processed")
 
         return image, heads
 
