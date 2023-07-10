@@ -22,12 +22,12 @@ def detect_head_turns(frame, left_count, right_count, state, start_time, angle_f
 
     user = User.objects.get(username=username)
     user_settings_pre = settings_model.objects.get(user=user).id_settings
-    print("User is user ", user_settings_pre)
+    # print("User is user ", user_settings_pre)
 
     req_count_time = settings_model.objects.get(id_settings = user_settings_pre).head_count_time_sec
     left_move = settings_model.objects.get(id_settings = user_settings_pre).left_head_threshHold
     right_move = settings_model.objects.get(id_settings = user_settings_pre).right_head_threshHold
-    # print("req data is", req_count_time)
+    # print("req count time is", req_count_time)
     # print("Left threshold is ", left_move, "right is ", right_move )
 
     # Function to calculate face direction

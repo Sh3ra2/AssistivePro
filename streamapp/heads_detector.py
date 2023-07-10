@@ -8,6 +8,7 @@ mp_drawing_styles = mp.solutions.drawing_styles
 mp_face_mesh = mp.solutions.face_mesh
 import tensorflow._api.v2.compat.v1 as tf
 from .head_pose_pred import detect_head_turns
+from django.contrib.auth.models import User
 tf.disable_v2_behavior()
 
 import cv2
@@ -70,8 +71,13 @@ class FROZEN_GRAPH_HEAD():
         scores = np.squeeze(scores)
         classes = np.squeeze(classes).astype(np.int32)
 
+        # -- get user for "count"
+        user = User.objects.get(username=username)
+        user_settings_pre = settings_model.objects.get(user=user).id_settings
+
         # -- Counts allowed are given to function
-        req_count_turns = settings_model.objects.get(id_settings = 1).head_turn_count
+        req_count_turns = settings_model.objects.get(id_settings = user_settings_pre).head_turn_count
+        # req_count_turns = settings_model.objects.get(id_settings = 1).head_turn_count
         print("req data is", req_count_turns)
 
         heads = list()
