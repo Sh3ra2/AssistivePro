@@ -9,11 +9,22 @@ mp_face_mesh = mp.solutions.face_mesh
 import tensorflow._api.v2.compat.v1 as tf
 from .head_pose_pred import detect_head_turns
 tf.disable_v2_behavior()
+
 import cv2
+# Set the compression quality in which you are saving image(0 - lowest, 100 - highest)
+compression_quality = 20
+
 import firebase_admin
 from firebase_admin import credentials, firestore, storage, db
 from datetime import datetime
 from .models import settings_model
+
+# -- set logging
+import logging
+# -- Configure logging
+logger = logging.getLogger('head_pose')
+logging.basicConfig(filename='log/head_pose.log', level=logging.INFO,
+                    format='%(asctime)s %(levelname)s %(message)s')
 
 
 # <-------------- Accessing database -------------->
@@ -112,12 +123,17 @@ class FROZEN_GRAPH_HEAD():
                 cv2.putText(image, 'Angle: {:.2f}%'.format(self.angle_face), (left, bottom+35), 0, 0.55, (0, 255, 255), 2)
 
                 if (self.countL == req_count_turns or self.countR == req_count_turns):
+                    print("Photo Being Sent")
+                    logger.critical("Photo Being Sent")
+
                     cv2.rectangle(image, (left, top), (right, bottom), (0, 0, 225), 2, 8)
                     timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
                     # -- naming image
                     file_name = f'capture_{timestamp}.jpg'
                     source_address = f"media/alerts/{file_name}"
-                    cv2.imwrite(source_address, image)
+                    
+                    # -- saving image 
+                    cv2.imwrite(source_address, image, [cv2.IMWRITE_JPEG_QUALITY, compression_quality])
 
                     # -- Uplaoding file
                     bucket = storage.bucket()
@@ -131,6 +147,8 @@ class FROZEN_GRAPH_HEAD():
                     alert_ref = db.collection(u'Alerts').add(name_for_upload)
                     self.countL = 0
                     self.countR = 0
+                    logger.critical("Photo Just Sent")
+                    print("Photo Just Sent")
 
         return image, heads
 

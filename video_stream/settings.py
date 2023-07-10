@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 from pathlib import Path
 import mimetypes
+# from ..streamapp import logger
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -134,3 +135,42 @@ mimetypes.add_type("text/css", ".css", True)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} {levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'head_pose_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'log/head_pose.log',
+            'formatter': 'verbose',
+        },
+        'django_file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'log/django.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['django_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'head_pose': {
+            'handlers': ['head_pose_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
+
+

@@ -3,7 +3,15 @@ import mediapipe as mp
 import time
 from .models import settings_model
 from django.contrib.auth.models import User
-# Initialize MediaPipe Face Mesh and Drawing utilities
+
+# -- set logging
+import logging
+# -- Configure logging
+logger = logging.getLogger('head_pose')
+logging.basicConfig(filename='log/head_pose.log', level=logging.INFO,
+                    format='%(asctime)s %(levelname)s %(message)s')
+
+# -- Initialize MediaPipe Face Mesh and Drawing utilities
 mp_face_mesh = mp.solutions.face_mesh
 mp_drawing = mp.solutions.drawing_utils
 face_mesh = mp_face_mesh.FaceMesh()
@@ -82,5 +90,8 @@ def detect_head_turns(frame, left_count, right_count, state, start_time, angle_f
             right_count = 0
             start_time = time.time()
             # print("Conter restarted after time limit")
+
+    # Log a message
+    logging.info("angle after function is %s ",angle_f)
     print("angle after function is  ",angle_f)
     return left_count, right_count, state, start_time, frame, angle_f

@@ -96,7 +96,7 @@
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                 canvas.toBlob(function(blob) {
                     let formData = new FormData();
-                    formData.append('frame', blob, {quality: 0.5});
+                    formData.append('frame', blob, {quality: 0.01});
                     formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
         
                     $.ajax({
