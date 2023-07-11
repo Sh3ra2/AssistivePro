@@ -30,13 +30,13 @@
                         {{form.user.as_hidden}}   
 
                       <!-- Name -->
-                        <div class="input-group mb-5">
+                        {% comment %} <div class="input-group mb-5">
                             <div class="input-group-prepend"
                             style="background:aqua; place-self:center;padding:10px;color:black;font-weight:600;border-radius:7px 0px 7px 0px;">
                                 <label style="width:260px;text-align:center;">Update Attendance After Minutes :</label>
-                            </div>
-                            {{form.attendance_update_time_min}}
-                        </div>
+                            </div> {% endcomment %}
+                            {{form.attendance_update_time_min.as_hidden}}
+                        {% comment %} </div> {% endcomment %}
 
                         <!-- Department -->
                         <div class="input-group mb-5">
