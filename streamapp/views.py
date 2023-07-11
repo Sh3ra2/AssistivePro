@@ -533,10 +533,12 @@ def app_settings(request):
 
 			messages.success(request,f"Updated!")
 			return redirect('/app_settings')
+		else:
+			messages.success(request, f"Something went wrong!")
 	else:
 		roll = settings_model.objects.get(user = request.user)
 		form  = settings_form(instance= roll)
-		print("Hello from else of settings")
+		print("From else of settings")
 
 	return render(request, 'app_settings.html', {'form': form})
 
