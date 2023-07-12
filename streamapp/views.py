@@ -1,10 +1,9 @@
-# -- Importing current files
+# -- Import Libraris
 from django.shortcuts import render, redirect
 from django.http.response import StreamingHttpResponse
 from streamapp.attendance import attendance
 from streamapp.monitor_students import HeadDetectionView
 import os
-import time
 import datetime
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,logout,login
@@ -26,9 +25,11 @@ from .mk_csv import export_firestore_to_csv
 # -- Import Firebase libraries
 from django.contrib import messages
 import firebase_admin
-from firebase_admin import credentials, firestore, storage
+from firebase_admin import credentials, firestore, storage, auth 
+from firebase_integration.firebase_utils import get_firebase_users
 
-# -- Setup Firebase
+
+# -- Firebase Setup ////////////////////////////////////////////////////////////
 if not firebase_admin._apps:
     cred = credentials.Certificate("static/server-assistivepro-firebase-adminsdk-mpb8d-f8b5a22e4e.json")
     app = firebase_admin.initialize_app(cred,{
@@ -36,10 +37,11 @@ if not firebase_admin._apps:
 	    'storageBucket': "server-assistivepro.appspot.com"
 	})
 db = firestore.client()
+# /////////////////////////////////////////////////////////////////////////////////
+
+
 
 # ------------------- views here ---------------------
-
-
 
 # -- Homepage --\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 def index(request):
@@ -320,7 +322,7 @@ def encode_data(request):
 		return redirect('/login_user')
 	
 
-	# --Start--> Getting images to show on the encode page
+	# --Start--> Getting images to encode
 	print("Hi from encode view.py")
 	context = profile_image.objects.filter(user = request.user)
 	images={}
@@ -338,16 +340,8 @@ def encode_data(request):
 		blob.download_to_filename(dest)
 		images[data.roll_num] = dest
 		print(images)
-	# <--End-- Getting images to show on the encode page
-	
+	# <--End-- Getting images to encode
 
-
-
-
-	# for key, values in my_dict.items:
-	# 	print("key is ", key," value is ", values)
-	# <--End-- Getting last attendance from firestore
-	# print("dict is ",my_dict)
 	i = len(context)
 	user = User.objects.get(username=request.user.username)
 	dfolder = user.get_username()
@@ -360,99 +354,11 @@ def pre_encode(request):
 	if request.user.is_anonymous:
 		return redirect('/login_user')
 	
-	# --Start--> Getting images to show on the encode page
+	# -- just show how many students images will be encoded
 	context = profile_image.objects.filter(user = request.user)
-	
 	i = len(context)
 
 	return render(request, 'PreEncode.html', {"t_pics": i})
-
-
-# -- Ip Cam Manage Functions --\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-def camera_manage(request):
-	if request.user.is_anonymous:
-		return redirect('/login_user')
-	
-	# get data in stream-------------------------
-	context = camera_model.objects.all()
-
-	print("Context is ", context)
-
-	# for key, values in context.items:
-	# 	print("keys are ", key, "values are ", values)
-	# print("My dictionary", my_dict)
-
-	# --Start--> Getting images to show on the encode page
-
-	return render(request, 'CameraManage.html', {'Maindata':context})
-
-
-def add_camera(request):
-	if request.user.is_anonymous:
-		return redirect('/login_user')
-	
-	if request.method == 'POST':
-
-		form  = camera_form(request.POST)
-
-		# print(type(form))
-		if form.is_valid():
-			form.save()
-
-			d = (len(camera_model.objects.all())-1)
-
-			# Getting data
-			id = camera_model.objects.all()[d].cam_id
-		
-			messages.success(request,f"ID {id} Added!")
-			return redirect('/camera_manage')
-		else:
-			messages.success(request,"Error")
-			return redirect('/camera_manage')
-		
-	form = camera_form()
-	return render(request, 'AddCamera.html', {'form':form})
-
-
-def delete_camera(request, id):
-	if request.user.is_anonymous:
-		return redirect('/login_user')
-	
-	
-	if request.method == "POST":
-		# -- delete user from web db
-		user_id = camera_model.objects.get(cam_id = id)
-		print("user id is ",user_id)
-		user_id.delete()
-
-		messages.success(request,f"ID {id} Deleted!")
-		return redirect('/camera_manage')
-
-	# -- after deletion redirect user to view data page
-	return redirect('/camera_manage')
-
-
-def edit_camera(request, id):
-	if request.user.is_anonymous:
-		return redirect('/login_user')
-
-	print("Hellow from edit camra")
-	if request.method == 'POST':
-		roll = camera_model.objects.get(cam_id = id)
-		form  = camera_form(request.POST,  instance=roll)
-		# print(type(form))
-		if form.is_valid():
-			form.save()
-
-			messages.success(request,f"ID {id} Updated!")
-			return redirect('/camera_manage')
-	else:
-		roll = camera_model.objects.get(cam_id = id)
-		form  = camera_form(instance= roll)
-		print("Hellow from edit cam else")
-
-
-	return render(request, 'EditCamera.html', {'form': form , 'id':id})
 
 
 # -- Service Functions --\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -467,8 +373,6 @@ def video_data(request):
 def pre_session(request):
 	if request.user.is_anonymous:
 		return redirect('/login_user')
-	
-	# --Start--> Getting images to show on the encode page
 
 	return render(request, 'PreSession.html')
 
@@ -518,7 +422,6 @@ def delete_csv(request, file_name):
 	
 
 # -- app_settings --\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
 def app_settings(request):
 	if request.user.is_anonymous:
 		return redirect('/login_user')
@@ -543,6 +446,7 @@ def app_settings(request):
 	return render(request, 'app_settings.html', {'form': form})
 
 
+# -- service_section --\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 def end_session(request):
 	if request.user.is_anonymous:
 		return redirect('/login_user')
@@ -588,7 +492,7 @@ def end_session_att(request):
 	at = new_now.replace(":","")
 	foldername = f'media/att_data/{user_id}'
 	filename = f'media/att_data/{user_id}/{at}.csv'
-	# Create the folder if it doesn't exist
+	# -- Create the folder if it doesn't exist
 	os.makedirs(foldername, exist_ok=True)
 
 	# -- function to make csv of attendance present in firestore
@@ -596,7 +500,7 @@ def end_session_att(request):
 
 	# -- delete data in store
 	users_ref = db.collection(u'recent_att')
-	# get data in stream-------------------------
+	# -- get data in stream-------------------------
 	docs = users_ref.stream()
 	for doc in docs:
 		print("deleting attendance for ", doc)
@@ -609,3 +513,86 @@ def end_session_att(request):
 
 	messages.success(request,"Attendance Saved!")
 	return redirect('/video_data')
+
+# -- User Functions --\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+def user_view(request):
+	if request.user.is_anonymous:
+		return redirect('/login_user')
+	
+	firebase_users = get_firebase_users()
+	firebase_users_list = list(firebase_users.iterate_all())
+
+	# print(firebase_users_list)
+	return render(request, 'UserView.html' ,{"Maindata":firebase_users_list})
+
+
+def add_user(request):
+	if request.user.is_anonymous:
+		return redirect('/login_user')
+	
+	# Get user data from the request or generate it as needed
+	if request.method == 'POST':
+		email = request.POST.get('email')
+		password = request.POST.get('password')
+		display_name = request.POST.get('display_name')
+
+		try:
+			user = auth.create_user(
+                email=email,
+                password=password,
+                display_name=display_name
+            )
+
+			messages.success(request, 'User added successfully.')
+			return redirect('/user_view')
+		except:
+			messages.success(request, f"Error")
+			return redirect('/add_user')
+
+	return render(request, 'AddUser.html')
+
+
+def edit_user(request, id):
+	if request.user.is_anonymous:
+		return redirect('/login_user')
+	
+	if request.method == 'POST':
+		email = request.POST.get('email')
+		password = request.POST.get('password')
+		display_name = request.POST.get('display_name')
+
+		try:
+            # Update the user's email using the Firebase Admin SDK
+			user = auth.update_user(
+				uid = id,
+				email = email,
+				password = password,
+				display_name = display_name
+			)
+			messages.success(request, 'User updated successfully.')
+			return redirect('/user_view')
+		except auth.AuthError as e:
+			error_message = str(e)
+			messages.success(request, f'Error Here:{error_message}')
+			return redirect('/edit_user')
+	else:
+		# uid = request.GET.get('uid')  # Retrieve the user ID from the query string
+		user = auth.get_user(id)  # Retrieve the user's information from Firebase
+		return render(request, 'EditUser.html', {'user': user})
+
+
+
+def delete_user(request, id):
+	if request.user.is_anonymous:
+		return redirect('/login_user')
+	
+	try:
+		auth.delete_user(id)
+		messages.success(request,f"User:{id} Deleted!")
+		print("User deleted successfully")
+		return redirect('/user_view')
+		
+	except Exception as e:
+		messages.success(request,f"Error, {e}, deleting user: {id}")
+		return redirect('/user_view')
+

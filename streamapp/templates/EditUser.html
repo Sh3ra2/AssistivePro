@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block page_title %}Add{% endblock page_title %}
+
+{% block navitems %} 
+    <li class="nav-item active">
+        <a class="nav-link" href="/view_data">Students</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/recent_att">Attendance</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/user_view">Users</a>
+    </li>
+{% endblock navitems %} 
+
+
+{% block banner %}
+    <img src="{% static 'datamain.png' %}" class="d-block w-100" alt="..." style="height:500px;">
+{% endblock banner %}
+
+
+{% block bannermessage %}
+    <div class="carousel-caption d-none d-md-block">
+        <h1>AssistivePro</h1>
+        <h3>Manage data online</h3>
+    </div>
+{% endblock bannermessage %}
+
+
+{% block page_name %} Upload {% endblock page_name %} 
+
+
+{% block page_body %}
+<body>
+<!-- Data Block Starts -->
+<div class="student_add_page_card">
+    
+    <div class="card-body py-8 px-md-5" style="overflow:auto;">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold mb-5" style="margin-top:20px;"><u>Update User</u></h2>
+                <form action="{% url 'edit_user' user.uid %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <input type="test" name="id" placeholder="Email" value="{{ user.uid }}" required>
+                        <input type="email" name="email" placeholder="Email" value="{{ user.email }}" required>
+                        <input type="password" name="password" placeholder="Password" value="{{ user.password }}" required>
+                        <input type="text" name="display_name" placeholder="Display Name" value="{{ user.display_name}}" required>
+
+                        <input class="btn btn-primary" type="submit" value="Update" style="font-weight:700;color:black;background:aqua;margin-bottom:30px;border:5px double white;margin-bottom:30px;">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+{% endblock page_body %}

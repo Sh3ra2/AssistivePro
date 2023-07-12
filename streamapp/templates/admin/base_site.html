@@ -1,0 +1,9 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block branding %}
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}"><img src="{% static 'logoAssistivePro.png' %}" alt="Logo"
+            style="width:32px; background:black; padding:7px; border-radius:10px;"></a>
+    </h1>
+{% endblock %}
