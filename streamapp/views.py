@@ -437,7 +437,7 @@ def app_settings(request):
 			messages.success(request,f"Updated!")
 			return redirect('/app_settings')
 		else:
-			messages.success(request, f"Something went wrong!")
+			messages.success(request, f"Recheck Form!")
 	else:
 		roll = settings_model.objects.get(user = request.user)
 		form  = settings_form(instance= roll)

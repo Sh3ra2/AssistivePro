@@ -105,22 +105,22 @@ class settings_form(forms.ModelForm):
 
     head_turn_count = forms.IntegerField(widget= forms.NumberInput(attrs={
         "class" : "form-control",
-        "placeholder" : "No of times a person turns head and gets pictured",
+        "placeholder" : "range(1, 100)",
     }))
 
     head_count_time_sec = forms.IntegerField(widget= forms.NumberInput(attrs={
         "class" : "form-control",
-        "placeholder" : "Head turn counts resets every __ secounds",
+        "placeholder" : "range(1, 3600)",
     }))
 
     left_head_threshHold = forms.IntegerField(widget= forms.NumberInput(attrs={
         "class" : "form-control",
-        "placeholder" : "-ve only, Left angle till which one can look",
+        "placeholder" : "range(-1, -50)",
     }))
 
     right_head_threshHold = forms.IntegerField(widget= forms.NumberInput(attrs={
         "class" : "form-control",
-        "placeholder" : "+ve only, Right angle till which one can look",
+        "placeholder" : "range(1, 50)",
     }))
 
 

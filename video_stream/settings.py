@@ -152,19 +152,19 @@ LOGGING = {
             'filename': 'log/head_pose.log',
             'formatter': 'verbose',
         },
-        'django_file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': 'log/django.log',
-            'formatter': 'verbose',
-        },
+        # 'django_file': {
+        #     'level': 'DEBUG',
+        #     'class': 'logging.FileHandler',
+        #     'filename': 'log/django.log',
+        #     'formatter': 'verbose',
+        # },
     },
     'loggers': {
-        'django': {
-            'handlers': ['django_file'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
+        # 'django': {
+        #     'handlers': ['django_file'],
+        #     'level': 'DEBUG',
+        #     'propagate': False,
+        # },
         'head_pose': {
             'handlers': ['head_pose_file'],
             'level': 'INFO',
