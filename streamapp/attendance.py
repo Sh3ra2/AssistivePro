@@ -17,6 +17,7 @@ if not firebase_admin._apps:
 	})
 bucket = storage.bucket()
 db_1 = firestore.client()
+db = firestore.client()
 font = cv2.FONT_HERSHEY_COMPLEX
 
 class attendance(object):
@@ -73,24 +74,20 @@ class attendance(object):
                 if counter != 0:
 
                     if counter == 1:
-                        studentInfo = db.reference(f'Students/{id}').get()
+                        # studentInfo = db.reference(f'Students/{id}').get()
+                        users_ref = db.collection(u'Students').document(id)
+                        # Get data from the document
+                        doc = users_ref.get()
+
+                        if doc.exists:
+                            data = doc.to_dict()
+                            print("Document data:", data)
+                        else:
+                            print("Document does not exist.")
 
                         new_ref = db_1.collection(u'recent_att').document(id)
 
-                        new_ref.set({
-                            u'id': id
-                        }, merge=True)
-
-                        # datetimeObject = datetime.strptime(studentInfo['Last_attendance'],
-                        #                                 "%Y-%m-%d %H:%M:%S")
-                        # secondsElapsed = (datetime.now() - datetimeObject).total_seconds()
-
-                        # if secondsElapsed > 30:
-                        #     ref = db.reference(f'Students/{id}')
-                        #     studentInfo['Total_attendance'] += 1
-                        #     ref.child('Total_attendance').set(studentInfo['Total_attendance'])
-                        #     ref.child('Last_attendance').set(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-
+                        new_ref.set(data, merge=True)
         
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         return img
