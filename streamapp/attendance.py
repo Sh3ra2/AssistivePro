@@ -26,12 +26,12 @@ class attendance(object):
     def __init__(self):
         self.encodeListKnown = []
         self.studentIds = []
-        self.load_encode_file()
+        
 
-    def load_encode_file(self):
+    def load_encode_file(self, myuser):
         # Load the encoding file
         print("Loading Encode File ...")
-        with open("Encodings/EncodedFace.p", "rb") as file:
+        with open(f"Encodings/{myuser}/EncodedFace.p", "rb") as file:
             encodeListKnownWithIds = pickle.load(file)
             self.encodeListKnown, self.studentIds = encodeListKnownWithIds
         print("Loaded")

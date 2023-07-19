@@ -1,0 +1,172 @@
+2023-07-19 21:16:33,054 WARNING From D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\tensorflow\python\compat\v2_compat.py:107: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+2023-07-19 21:17:09,640 INFO D:\Pycharm\projects\AssistivePro_Webapp\streamapp\encode.py changed, reloading.
+2023-07-19 21:17:17,903 WARNING From D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\tensorflow\python\compat\v2_compat.py:107: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+2023-07-19 21:18:03,455 ERROR Internal Server Error: /encode_data
+Traceback (most recent call last):
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Pycharm\projects\AssistivePro_Webapp\streamapp\views.py", line 348, in encode_data
+    encode_process(dfolder)
+  File "D:\Pycharm\projects\AssistivePro_Webapp\streamapp\encode.py", line 51, in encode_process
+    file = open(f"Encodings/{userfolder}/EncodedFace.p", "wb")
+FileNotFoundError: [Errno 2] No such file or directory: 'Encodings/class11@class/EncodedFace.p'
+2023-07-19 21:33:48,852 INFO D:\Pycharm\projects\AssistivePro_Webapp\streamapp\attendance.py changed, reloading.
+2023-07-19 21:33:57,027 WARNING From D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\tensorflow\python\compat\v2_compat.py:107: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+2023-07-19 21:34:39,076 INFO D:\Pycharm\projects\AssistivePro_Webapp\streamapp\views.py changed, reloading.
+2023-07-19 21:34:47,205 WARNING From D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\tensorflow\python\compat\v2_compat.py:107: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+2023-07-19 21:34:53,892 INFO D:\Pycharm\projects\AssistivePro_Webapp\streamapp\attendance.py changed, reloading.
+2023-07-19 21:35:30,639 WARNING From D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\tensorflow\python\compat\v2_compat.py:107: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+2023-07-19 21:36:42,830 INFO D:\Pycharm\projects\AssistivePro_Webapp\streamapp\attendance.py changed, reloading.
+2023-07-19 21:36:50,686 WARNING From D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\tensorflow\python\compat\v2_compat.py:107: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+2023-07-19 21:41:09,899 INFO D:\Pycharm\projects\AssistivePro_Webapp\streamapp\attendance.py changed, reloading.
+2023-07-19 22:13:06,154 WARNING From D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\tensorflow\python\compat\v2_compat.py:107: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+2023-07-19 22:13:09,312 INFO D:\Pycharm\projects\AssistivePro_Webapp\streamapp\views.py changed, reloading.
+2023-07-19 22:13:18,615 WARNING From D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\tensorflow\python\compat\v2_compat.py:107: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+2023-07-19 22:23:45,263 WARNING From D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\tensorflow\python\compat\v2_compat.py:107: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+2023-07-19 22:41:45,769 ERROR Internal Server Error: /video_feed
+Traceback (most recent call last):
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\django\utils\datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'frame'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Pycharm\projects\AssistivePro_Webapp\streamapp\views.py", line 92, in video_feed
+    frame = request.FILES['frame']
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\django\utils\datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'frame'
+2023-07-19 22:44:27,221 ERROR Internal Server Error: /video_feed
+Traceback (most recent call last):
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\django\utils\datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'frame'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "D:\Pycharm\projects\AssistivePro_Webapp\streamapp\views.py", line 92, in video_feed
+    frame = request.FILES['frame']
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\django\utils\datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'frame'
+2023-07-19 22:45:12,422 ERROR Internal Server Error: /delete/100/
+Traceback (most recent call last):
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\urllib3\connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\urllib3\connectionpool.py", line 449, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\urllib3\connectionpool.py", line 444, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\http\client.py", line 1377, in getresponse
+    response.begin()
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\http\client.py", line 320, in begin
+    version, status, reason = self._read_status()
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\http\client.py", line 281, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\ssl.py", line 1242, in recv_into
+    return self.read(nbytes, buffer)
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\ssl.py", line 1100, in read
+    return self._sslobj.read(len, buffer)
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\requests\adapters.py", line 489, in send
+    resp = conn.urlopen(
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\urllib3\util\retry.py", line 550, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\urllib3\packages\six.py", line 769, in reraise
+    raise value.with_traceback(tb)
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\urllib3\connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\urllib3\connectionpool.py", line 449, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\urllib3\connectionpool.py", line 444, in _make_request
+    httplib_response = conn.getresponse()
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\http\client.py", line 1377, in getresponse
+    response.begin()
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\http\client.py", line 320, in begin
+    version, status, reason = self._read_status()
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\http\client.py", line 281, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\ssl.py", line 1242, in recv_into
+    return self.read(nbytes, buffer)
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\ssl.py", line 1100, in read
+    return self._sslobj.read(len, buffer)
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Pycharm\projects\AssistivePro_Webapp\streamapp\views.py", line 309, in delete_student
+    blob.delete()
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\google\cloud\storage\blob.py", line 763, in delete
+    self.bucket.delete_blob(
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\google\cloud\storage\bucket.py", line 1650, in delete_blob
+    client._delete_resource(
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\google\cloud\storage\client.py", line 679, in _delete_resource
+    return self._connection.api_request(
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\google\cloud\storage\_http.py", line 72, in api_request
+    return call()
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\google\cloud\_http\__init__.py", line 482, in api_request
+    response = self._make_request(
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\google\cloud\_http\__init__.py", line 341, in _make_request
+    return self._do_request(
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\google\cloud\_http\__init__.py", line 379, in _do_request
+    return self.http.request(
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\google\auth\transport\requests.py", line 549, in request
+    response = super(AuthorizedSession, self).request(
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\requests\sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\requests\sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Anaconda_Files\envs\tf-gpu\lib\site-packages\requests\adapters.py", line 547, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))

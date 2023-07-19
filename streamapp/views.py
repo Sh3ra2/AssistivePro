@@ -73,6 +73,7 @@ def login_user(request):
 	
 	return render(request, 'login.html')
 
+
 def logout_user(request):
 	logout(request)
 	return redirect('/login_user')
@@ -81,6 +82,7 @@ def logout_user(request):
 
 # -- Get Video Functions --\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+	# return request.user.username
 markattendance = attendance()
 @csrf_exempt
 def video_feed(request):
@@ -366,7 +368,7 @@ def video_data(request):
 	if request.user.is_anonymous:
 		return redirect('/login_user')
 	
-	markattendance.load_encode_file()
+	markattendance.load_encode_file(f'{request.user}')
 	return render(request, 'VideoPage.html')
 
 

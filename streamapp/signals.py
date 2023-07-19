@@ -16,3 +16,6 @@ def create_user_settings(sender, instance, created, **kwargs):
 
             user_students = f'media/encode_images/{instance.username}'
             os.makedirs(user_students, exist_ok=True)
+
+            user_students = f'Encodings/{instance.username}'
+            os.makedirs(user_students, exist_ok=True)
